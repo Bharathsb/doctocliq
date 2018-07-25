@@ -1,0 +1,149 @@
+<ion-header>
+	<link rel="stylesheet" href="build/angular-calendar.css">
+	<link rel="stylesheet" href="build/angular-calendar-week-hours-view.scss">
+	<ion-navbar no-padding>
+		<ion-title>
+			<ion-row>
+				<ion-col col-4>
+					<button ion-button full clear icon-only mwlCalendarPreviousView [view]="view" [(viewDate)]="viewDate">
+						<ion-icon name="ios-arrow-back"></ion-icon>{{'Back' | translate}}
+					</button>
+				</ion-col>
+				<ion-col col-4 text-center>
+					<ion-label>{{'Agenda' | translate}}</ion-label>
+				</ion-col>
+				<ion-col col-4>
+					<button ion-button (click)="openMenu()">
+						<!-- <ion-icon name="menu"></ion-icon> -->
+						<ion-icon name="more"></ion-icon>
+					</button>
+				</ion-col>
+			</ion-row>
+		</ion-title>
+	</ion-navbar>
+</ion-header>
+
+<ion-content>
+	<ion-row>
+		<ion-col col-12 col-md-3>
+			<ion-row>
+				<ion-col col-4 no-padding>
+					<ion-label class="label-startendday">{{ _startdayOfWeek }} - {{ _enddayOfWeek }}</ion-label>
+					<!-- <ion-datetime displayFormat="MMM DD" [(ngModel)]="enddayOfweek"></ion-datetime> -->
+					<!-- <ion-label>{{ viewDate | calendarDate:(view + 'ViewTitle') | translate }}</ion-label> -->
+				</ion-col>
+				<ion-col col-4 no-padding>
+					<ion-row>
+						<ion-col col-2 no-padding>
+							<button ion-button full clear icon-only mwlCalendarPreviousView [view]="view" [(viewDate)]="viewDate" (click)="decrement()"
+							 [disabled]="prevBtnDisabled">
+								<ion-icon name="ios-arrow-back"></ion-icon>
+							</button>
+						</ion-col>
+						<ion-col col-8 no-padding>
+							<button ion-button full clear mwlCalendarToday [(viewDate)]="viewDate" (click)="today()">Today</button>
+						</ion-col>
+						<ion-col col-2 no-padding>
+							<button ion-button full clear icon-only mwlCalendarNextView [view]="view" [(viewDate)]="viewDate" (click)="increment()" [disabled]="nextBtnDisabled">
+								<ion-icon name="ios-arrow-forward"></ion-icon>
+							</button>
+						</ion-col>
+					</ion-row>
+				</ion-col>
+				<ion-col col-2 no-padding></ion-col>
+				<ion-col col-2 no-padding>
+					<!-- <ion-segment [(ngModel)]="sections.selectedSection">
+						<ion-segment-button value="{{sections.first}}">
+							First section
+						</ion-segment-button>
+						<ion-segment-button value="{{sections.second}}">
+							Second section
+						</ion-segment-button>
+					</ion-segment> -->
+
+					<ion-toggle toggle-class="toggle-assertive" ng-model="emailNotification" ng-true-value="'Subscribed'" ng-false-value="'Unubscribed'">
+						Newsletter
+					</ion-toggle>
+
+					<!-- <ion-toggle [(ngModel)]="switch_string" >{{switch_string}}</ion-toggle> -->
+					<!-- <kendo-switch></kendo-switch> -->
+				</ion-col>
+			</ion-row>
+		</ion-col>
+	</ion-row>
+
+	<!-- <mwl-calendar-week-view
+		[viewDate]="viewDate"
+		[events]="events"
+		[excludeDays]="excludeDays"
+		(eventClicked)="handleEvent($event.event)"
+	>
+	</mwl-calendar-week-view>	 -->
+	<!-- <div class="col-md-4">
+		<div class="btn-group">
+		  <div class="btn btn-primary" (click)="changeView('month')" [class.active]="view === 'month'">Month</div>
+		  <div class="btn btn-primary" (click)="changeView('week')" [class.active]="view === 'week'">Week</div>
+		  <div class="btn btn-primary" (click)="changeView('day')" [class.active]="view === 'day'">Day</div>
+		</div>
+	</div> -->
+
+	<!-- <div [ngSwitch]="view">
+		<mwl-calendar-week-view *ngSwitchCase="'Agenda'"
+			[viewDate]="viewDate"
+			[events]="events">
+		</mwl-calendar-week-view>	
+	</div> -->
+	<iq-calendar-week-hours-view [viewDate]="viewDate" [events]="events" [excludeDays]="excludeDays" [hourSegments]="2" [dayStartHour]="9"
+	 [dayEndHour]="21" (eventClicked)="handleEvent($event.event)" (hourSegmentClicked)="hourSegmentClicked($event)" (eventTimesChanged)="eventTimesChanged($event)"
+	 [weekStartsOn]="1" [refresh]="refresh" [locale]="locale">
+	</iq-calendar-week-hours-view>
+	<ion-row>
+		<ion-col col-12 col-md-3>
+			<ion-row>
+				<ion-label>
+					<b>Doctores:
+						<button ion-button (click)="loadEvents(listAppointments.appointment)">{{'See all' | translate}}</button>
+					</b>
+				</ion-label>
+			</ion-row>
+			<ion-list>
+				<button ion-item *ngFor="let item of doctors" (click)="selectedDoctor(item)" style="cursor: pointer; padding: 4px;">
+					<span  [style.background]="item.color"> {{ item.name }} </span> </button>
+			</ion-list>
+			<!-- <ul id="docList">
+							<li class="legendEle" data-id="1" data-fname="Dr.Kevin Altamirano" data-name="Kevin Altamirano" data-speciality="Traumatologia"
+						 data-color="#52A8EF" style="cursor: pointer; padding: 4px; background-color:#52A8EF ">
+							<span>Dr.Kevin Altamirano</span>
+						</li>
+						<li class="legendEle" data-id="6" data-fname="Dr.Pedro Morales" data-name="Pedro Morales" data-speciality="Ginecologia"
+						 data-color="#67D1DE" style="cursor: pointer; padding: 4px; background-color:#67D1DE ">
+							<span>Dr.Pedro Morales</span>
+						</li>
+						<li class="legendEle" data-id="9" data-fname="Dr.Sergio Morales Tinoco" data-name="Sergio Morales Tinoco" data-speciality="Urologia"
+						 data-color="#E0D45A" style="cursor: pointer; padding: 4px; background-color:#E0D45A ">
+							<span>Dr.Sergio Morales Tinoco</span>
+						</li>
+						<li class="legendEle" data-id="23" data-fname="Dr.Fernando Salinas Gomez" data-name="Fernando Salinas Gomez" data-speciality="Traumatologia"
+						 data-color="#d69df2" style="cursor: pointer; padding: 4px; background-color:#d69df2 ">
+							<span>Dr.Fernando Salinas Gomez</span>
+						</li>
+						<li class="legendEle" data-id="33" data-fname="Dr.Paulo Balajo Torres" data-name="Paulo Balajo Torres" data-speciality="Urologia"
+						 data-color="#86D6C2" style="cursor: pointer; padding: 4px; background-color:#86D6C2 ">
+							<span>Dr.Paulo Balajo Torres</span>
+						</li>
+						<li class="legendEle" data-id="49" data-fname="Dr.Carla Arancibia Romero" data-name="Carla Arancibia Romero" data-speciality="Ginecología"
+						 data-color="#F0C56E" style="cursor: pointer; padding: 4px; background-color:#F0C56E ">
+							<span>Dr.Carla Arancibia Romero</span>
+						</li>
+						<li class="legendEle" data-id="50" data-fname="Dr.Roxana Huaroto Cárdenas" data-name="Roxana Huaroto Cárdenas" data-speciality="Ginecología"
+						 data-color="#857BCD" style="cursor: pointer; padding: 4px; background-color:#857BCD ">
+							<span>Dr.Roxana Huaroto Cárdenas</span>
+						</li>
+						<li class="legendEle" data-id="51" data-fname="Dr.Santiago Carallo Ortega" data-name="Santiago Carallo Ortega" data-speciality="Nutrición"
+						 data-color="#D79DBA" style="cursor: pointer; padding: 4px; background-color:#D79DBA ">
+							<span>Dr.Santiago Carallo Ortega</span>
+						</li>
+					</ul> -->
+		</ion-col>
+	</ion-row>
+</ion-content>

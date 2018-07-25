@@ -1,0 +1,1 @@
+export { CreatePatientComponent } from './createpatient';

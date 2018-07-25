@@ -1,0 +1,18 @@
+{
+  "name": "doctoc",
+  "app_id": "7bbe8a64",
+  "type": "ionic-angular",
+  "integrations": {
+    "cordova": {}
+  },
+  "proxies": [
+    {
+      "path": "/api-v1/",
+      "proxyUrl": "http://www.doctocliq.com/api-v1/"
+    },
+    {
+      "path": "/login/",
+      "proxyUrl": "http://www.doctocliq.com/rest-auth/login/"
+    }
+  ]
+}

@@ -1,0 +1,1 @@
+export { CreateAppointmentComponent } from './createAppointment'
