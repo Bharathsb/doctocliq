@@ -1,8 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { IonicPage, NavController, NavParams, Modal, ModalController, ModalOptions, Popover, PopoverController, PopoverOptions } from 'ionic-angular';
+import { IonicPage, NavController, Popover, PopoverController, PopoverOptions } from 'ionic-angular';
 import { Subject } from 'rxjs/Subject';
 import { AlertController } from 'ionic-angular/components/alert/alert-controller';
+import { Shared } from '../../providers/shared';
 import { Api } from '../../providers/api/api';
+import { TranslateService } from '@ngx-translate/core';
 import { PopOverPage } from '../../pages/popoverMenuItem';
 import * as moment from 'moment';
 
@@ -81,8 +83,6 @@ export class Tabclinic1Page implements OnInit {
   viewDate: Date = new Date();
   view: CalendarPeriod = 'week';
   testEvent: any;
-  doctors: any;
-
   locale: string = 'en';
   isDragging = false;
   refresh: Subject<any> = new Subject();
@@ -92,18 +92,25 @@ export class Tabclinic1Page implements OnInit {
   nextBtnDisabled: boolean = false;
   excludeDays: number[] = [0];
   events: CalendarEvent[] = [];
-  listAppointments: any;
-  colors: any = [{ "id": 1, "color": "#52A8EF" },
-  { "id": 6, "color": "#67D1DE" },
-  { "id": 9, "color": "#E0D45A" },
-  { "id": 23, "color": "#d69df2" },
-  { "id": 33, "color": "#86D6C2" },
-  { "id": 49, "color": "#F0C56E" },
-  { "id": 50, "color": "#857BCD" },
-  { "id": 51, "color": "#D79DBA" },]
 
-  constructor(public navCtrl: NavController, private alertCtrl: AlertController, public api: Api,
+  doctors: any;
+  listAppointments: any;
+  listevents: any;
+  colors: any = [{ "id": 1, "color": "#52A8EF" },
+  { "id": 9, "color": "#67D1DE" },
+  { "id": 23, "color": "#E0D45A" },
+  { "id": 33, "color": "#d69df2" },
+  { "id": 49, "color": "#86D6C2" },
+  { "id": 50, "color": "#F0C56E" },
+  { "id": 51, "color": "#857BCD" },
+  { "id": 6, "color": "#D79DBA" },];
+  isListView: boolean;
+  listViewDate: any;
+
+  constructor(public navCtrl: NavController, private alertCtrl: AlertController, public translateService: TranslateService
+    , public api: Api, public shared: Shared,
     public popoverCtrl: PopoverController) {
+    this.isListView = false;
   }
 
 
@@ -154,34 +161,40 @@ export class Tabclinic1Page implements OnInit {
   }
 
   increment(): void {
-    this.startdayOfWeek = addDays(startOfWeek(this.viewDate), 1);
-    this._startdayOfWeek = this.startdayOfWeek.toDateString().substring(4, 10);
-    this.enddayOfWeek = endOfWeek(this.viewDate);
-    this._enddayOfWeek = this.enddayOfWeek.toDateString().substring(4, 10);
-    console.log(this.startdayOfWeek);
-    // let tmp_date: Date = addPeriod(this.view, this.viewDate, 1); 
-    // this.changeDate(tmp_date);
-    // this.startdayOfWeek = startOfWeek(tmp_date);
-    // this.enddayOfWeek = endOfWeek(tmp_date);
-    // console.log(startOfWeek(this.startdayOfWeek));
-    this.getAppointments(this.startdayOfWeek);
+    if (!this.isListView) {
+      this.startdayOfWeek = addDays(startOfWeek(this.viewDate), 1);
+      this._startdayOfWeek = this.startdayOfWeek.toDateString().substring(4, 10);
+      this.enddayOfWeek = endOfWeek(this.viewDate);
+      this._enddayOfWeek = this.enddayOfWeek.toDateString().substring(4, 10);
+      this.getAppointments(this.startdayOfWeek, this.enddayOfWeek, false);
+    } else {
+      let tmp_date = addDays(startOfWeek(this.viewDate), 1);
+      this.getAppointments(tmp_date, undefined, true);
+      this.listViewDate = moment(tmp_date).format('ddd MMM DD')
+    }
   }
 
-  decrement(): void {
-    this.startdayOfWeek = addDays(startOfWeek(this.viewDate), 1);
-    this._startdayOfWeek = this.startdayOfWeek.toDateString().substring(4, 10);
-    this.enddayOfWeek = endOfWeek(this.viewDate);
-    this._enddayOfWeek = this.enddayOfWeek.toDateString().substring(4, 10);
-    // let tmp_date: Date = subPeriod(this.view, this.viewDate, 1);
-    // this.changeDate(tmp_date);
-    // this.startdayOfWeek = startOfWeek(tmp_date);
-    // this.enddayOfWeek = endOfWeek(tmp_date);
-    this.getAppointments(this.startdayOfWeek);
-  }
+  // decrement(): void {
+  //   if (!this.isListView) {
+  //     this.startdayOfWeek = addDays(startOfWeek(this.viewDate), 1);
+  //     this._startdayOfWeek = this.startdayOfWeek.toDateString().substring(4, 10);
+  //     this.enddayOfWeek = endOfWeek(this.viewDate);
+  //     this._enddayOfWeek = this.enddayOfWeek.toDateString().substring(4, 10);
+  //     this.getAppointments(this.startdayOfWeek, this.enddayOfWeek, false);
+  //   } else {
+  //     this.getAppointments(this.viewDate, undefined, true);
+  //     this.listViewDate = moment(this.viewDate).format('ddd MMM DD')
+  //   }
+  // }
 
   today(): void {
     this.changeDate(new Date());
-    this.getAppointments(this.viewDate);
+    if (!this.isListView) {
+      this.getAppointments(this.viewDate, undefined, false);
+    } else {
+      this.getAppointments(this.viewDate, undefined, true);
+      this.listViewDate = moment(this.viewDate).format('ddd MMM DD')
+    }
   }
 
   dateIsValid(date: Date): boolean {
@@ -201,9 +214,7 @@ export class Tabclinic1Page implements OnInit {
   }
 
   ngOnInit() {
-
-    this.getAppointments(this.viewDate);
-
+    this.getAppointments(this.startdayOfWeek, this.enddayOfWeek, false);
     this.api.get("clinics/get_doctors/").map(res => res.json()).subscribe(res => {
       console.log(res)
       this.doctors = [];
@@ -217,6 +228,7 @@ export class Tabclinic1Page implements OnInit {
       });
     }, err => {
       console.error('ERROR', err)
+      this.shared.ShowToast(err);
     });
   }
 
@@ -233,17 +245,28 @@ export class Tabclinic1Page implements OnInit {
     myModal.present();
   }
 
-  private getAppointments(date: any) {
-    //let body = { "param_date": "16/07/2018", "param_date_last": "20/07/2018", "csrfmiddlewaretoken": token };
-    let body = { "param_date": moment(date).format('DD/MM/YYYY') };
+  private getAppointments(fromDate: any, toDate: any, showListView: boolean) {
+    let body = { "param_date": moment(fromDate).format('DD/MM/YYYY') };
+    if (toDate) {
+      body['param_date_last'] = moment(toDate).format('DD/MM/YYYY')
+    }
     // let seq = this.api.get("../assets/mock/appointments.json")
-    let seq = this.api.authpost("/api-v1/clinics/get_appointment/", body)
+    this.listevents = [];
+    this.events = [];
+    this.shared.showLoading(this.translateService.instant('loading'));
+    let seq = this.api.authpost("clinics/get_appointment/", body, false)
     seq.map(res => res.json()).subscribe(res => {
-      console.log(res)
       this.listAppointments = res;
-      this.loadEvents(res.appointment);
+      if (!showListView) {
+        this.loadEvents(res.appointment);
+      } else {
+        this.loadListEvents(res.appointment);
+      }
+
     }, err => {
       console.error('ERROR', err)
+      this.shared.hideLoading();
+      this.shared.ShowToast(err);
     });
   }
 
@@ -253,7 +276,7 @@ export class Tabclinic1Page implements OnInit {
       let newEvent: CalendarEvent = {
         start: new Date(data.start),
         end: new Date(data.end),
-        title: data.patient.first_name + data.patient.last_name,
+        title: data.patient.first_name,
         cssClass: 'custom-event',
         color: {
           primary: '#488aff',
@@ -262,10 +285,51 @@ export class Tabclinic1Page implements OnInit {
       }
       this.events.push(newEvent);
     });
+    this.shared.hideLoading();
   }
+
+  private loadListEvents(appointments: any) {
+    this.listevents = [];
+    try{
+      appointments.filter((appointmentData) => (moment(appointmentData.start).format('DD/MM/YYYY') === moment(this.viewDate).format('DD/MM/YYYY'))).forEach((data) => {
+        let newPatient = {
+          time: moment(data.start).format('HH:mm A'),
+          patientName: data.patient.first_name,
+          reason: data.reason.title
+        }
+        this.listevents.push(newPatient);
+      });
+      this.shared.hideLoading();
+    }catch(err){
+      this.shared.ShowToast(err);
+    }
+    
+  }
+
   private selectedDoctor(doctor) {
     let filteredAppointments = this.listAppointments.appointment.filter((data) => (data.doctor.id === doctor.id));
-    this.loadEvents(filteredAppointments);
+    let url = "clinics/get_workschedules/?doctor_id=" + doctor.id + "&date=" + moment(this.startdayOfWeek).format('DD/MM/YYYY') + "&date_last=" + moment(this.enddayOfWeek).format('DD/MM/YYYY');
+    this.api.get(url).map(res => res.json()).subscribe(res => {
+      this.loadEvents(filteredAppointments);
+      if (res.length > 0) {
+        res.forEach((data) => {
+          let newEvent: CalendarEvent = {
+            start: new Date(data.date + "T" + data.time_start),
+            end: new Date(data.date + "T" + data.time_end),
+            title: '',
+            cssClass: 'custom-event',
+            color: {
+              primary: '#488aff',
+              secondary: data.color
+            }
+          }
+          this.events.push(newEvent);
+        });
+      }
+    }, err => {
+      console.error('ERROR', err)
+    });
+
   }
 
   private getColor(id) {
@@ -277,5 +341,14 @@ export class Tabclinic1Page implements OnInit {
     return "#bbd0f5";
   }
 
+
+  private loadListData(listValue: boolean) {
+    if (listValue) {
+      this.listViewDate = moment(this.viewDate).format('ddd MMM DD');
+      this.getAppointments(this.viewDate, undefined, true);
+    } else {
+      this.increment();
+    }
+  }
 }
 

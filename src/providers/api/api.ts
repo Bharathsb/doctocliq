@@ -8,30 +8,31 @@ import 'rxjs/add/operator/map';
  */
 @Injectable()
 export class Api {
-    // url: string = 'http://desa.doctocliq.com/api-v1/';
-    // ImageUrl: string = 'http://desa.doctocliq.com/';
+  // url: string = 'http://desa.doctocliq.com/api-v1/';
+  // ImageUrl: string = 'http://desa.doctocliq.com/';
 
-    // url: string = '35.229.16.214/api-v1/';
-    // ImageUrl: string = '35.229.16.214/';
-  
-  // url: string = 'http://www.doctocliq.com/api-v1/';
-  url: string = '/api-v1/';
+  // url: string = '35.229.16.214/api-v1/';
+  // ImageUrl: string = '35.229.16.214/';
+
+  //url: string = 'http://www.doctocliq.com/api-v1/';
+   url: string = '/api-v1/';
   ImageUrl: string = 'http://www.doctocliq.com/';
-    
+
   apipatients: string = 'patients/'
   apidoctors: string = 'doctors/'
   apiresend_sms: string = 'resend_sms_register/'
-  apiconfirm: string = 'confirm/' 
+  apiconfirm: string = 'confirm/'
   apiRegdoctor: string = 'register_doctor/'
   apiRegpatient: string = "register_patient/"
-  apiGetdistricts: string="districts/"
-  apispecialities: string="specialities"
-  apidoctors_establishments: string="doctors_establishments/list_by_search/?"
-  apiprice:string="reasons/list_by_establishment/?establishment_id="
-  apireason:string="reasons/list_by_establishment/" 
-  apicreatappointments:string="/appointments/"
-  apischedule:string="schedules/get_work_schedule_short_view/?establishment_id="
+  apiGetdistricts: string = "districts/"
+  apispecialities: string = "specialities"
+  apidoctors_establishments: string = "doctors_establishments/list_by_search/?"
+  apiprice: string = "reasons/list_by_establishment/?establishment_id="
+  apireason: string = "reasons/list_by_establishment/"
+  apicreatappointments: string = "/appointments/"
+  apischedule: string = "schedules/get_work_schedule_short_view/?establishment_id="
   constructor(public http: Http) {
+    
   }
 
   get(endpoint: string, params?: any, options?: RequestOptions) {
@@ -51,7 +52,7 @@ export class Api {
     }
     return this.http.get(this.url + endpoint, options);
   }
-getapi(endpoint: string, params?: any, options?: RequestOptions) {
+  getapi(endpoint: string, params?: any, options?: RequestOptions) {
     if (!options) {
       options = new RequestOptions();
     }
@@ -66,7 +67,7 @@ getapi(endpoint: string, params?: any, options?: RequestOptions) {
       // a search field set in options.
       options.search = !options.search && p || options.search;
     }
-    return this.http.get( endpoint, options);
+    return this.http.get(endpoint, options);
   }
 
   post(endpoint: string, body: any, options?: RequestOptions) {
@@ -74,7 +75,7 @@ getapi(endpoint: string, params?: any, options?: RequestOptions) {
   }
 
   put(endpoint: string, body: any, options?: RequestOptions) {
-    return this.http.put(this.url  + endpoint, body, options);
+    return this.http.put(this.url + endpoint, body, options);
   }
 
   delete(endpoint: string, options?: RequestOptions) {
@@ -84,16 +85,19 @@ getapi(endpoint: string, params?: any, options?: RequestOptions) {
   patch(endpoint: string, body: any, options?: RequestOptions) {
     return this.http.put(this.url + endpoint, body, options);
   }
-  authpost(endpoint: string, body: any,options?: RequestOptions) {
-    let token = sessionStorage.getItem("key");
-    const headers = new Headers();
-    headers.append('Content-Type', 'application/json');
-    headers.append('authorization', 'Token ' + token);
-    options = new RequestOptions({ headers: headers }); 
-    return this.http.post(endpoint, body, options);
+  authpost(endpoint: string, body: any, isLogin: boolean, options?: RequestOptions) {
+    let url;
+    if (!isLogin) {
+      let token = sessionStorage.getItem("key");
+      const headers = new Headers();
+      headers.append('Content-Type', 'application/json');
+      headers.append('authorization', 'Token ' + token);
+      options = new RequestOptions({ headers: headers });
+      url = this.url + endpoint;
+    }else{
+      url = endpoint;
+    }
+    return this.http.post(url, body, options);
   }
-  authpost1(endpoint: string, body: any,options?: RequestOptions) {
-   
-    return this.http.post(endpoint, body, options);
-  }
+
 }

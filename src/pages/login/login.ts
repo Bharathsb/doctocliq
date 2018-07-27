@@ -22,7 +22,9 @@ export class LoginPage {
   constructor(public navCtrl: NavController, public navParams: NavParams, private modal: ModalController,
     public translateService: TranslateService
     , public api: Api, public shared: Shared, formBuilder: FormBuilder, ) {
-    this.registerForm = formBuilder.group({
+      sessionStorage.clear();
+      localStorage.clear();
+      this.registerForm = formBuilder.group({
       password: ['', Validators.compose([Validators.required, Validators.minLength(6)])],
       phone: ['', Validators.compose([Validators.required, Validators.minLength(9), Validators.maxLength(9)])],
     });
@@ -125,7 +127,8 @@ export class LoginPage {
     if (this.validate()) {
       this.shared.showLoading(this.translateService.instant('loading'))
       let body = { "username": this.registerForm.value.phone, "password": this.registerForm.value.password };
-      let seq = this.api.authpost1("/login/", body)
+      let seq = this.api.authpost("/login/", body,true)
+      // let seq = this.api.authpost("http://www.doctocliq.com/rest-auth/login/", body,true)
       seq.map(res => res.json()).subscribe(res => {
         this.shared.hideLoading()
         console.log(res)
