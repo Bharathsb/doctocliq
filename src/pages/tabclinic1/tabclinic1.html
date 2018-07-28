@@ -35,7 +35,7 @@
 				<ion-col col-4 no-padding>
 					<ion-row>
 						<ion-col col-2 no-padding>
-							<button ion-button full clear icon-only mwlCalendarPreviousView [view]="view" [(viewDate)]="viewDate" (click)="increment()"
+							<button ion-button full clear icon-only mwlCalendarPreviousView [view]="view" [(viewDate)]="viewDate" (click)="decrement()"
 							 [disabled]="prevBtnDisabled">
 								<ion-icon name="ios-arrow-back"></ion-icon>
 							</button>
@@ -52,7 +52,7 @@
 				</ion-col>
 				<ion-col col-2 no-padding></ion-col>
 				<ion-col col-2 no-padding>
-					<ion-toggle toggle-class="toggle-assertive"  [(ngModel)]="isListView" (click)="loadListData(isListView)">
+					<ion-toggle toggle-class="toggle-assertive" [(ngModel)]="isListView" (ionChange)="loadListData()">
 					</ion-toggle>
 				</ion-col>
 			</ion-row>
@@ -60,11 +60,20 @@
 	</ion-row>
 
 	<div *ngIf="!isListView">
+		<ion-label>
+			<b>Filter:
+				<button ion-button >
+					<span (click)="filterDoctors()"  *ngIf="doctorName === undefined">{{ 'Select' | translate }}</span>
+					<span (click)="removeFilterDoctors()">{{doctorName}} <ion-icon name="close" *ngIf="doctorName !== undefined"></ion-icon></span>
+				</button>
+			</b>
+		</ion-label>
 		<iq-calendar-week-hours-view [viewDate]="viewDate" [events]="events" [excludeDays]="excludeDays" [hourSegments]="2" [dayStartHour]="9"
-		[dayEndHour]="21" (eventClicked)="handleEvent($event.event)" (hourSegmentClicked)="hourSegmentClicked($event)" (eventTimesChanged)="eventTimesChanged($event)"
-		[weekStartsOn]="1" [refresh]="refresh" [locale]="locale">
-	   </iq-calendar-week-hours-view>
-	   <ion-row>
+		 [dayEndHour]="21" (eventClicked)="handleEvent($event.event)" (hourSegmentClicked)="hourSegmentClicked($event)" (eventTimesChanged)="eventTimesChanged($event)"
+		 [weekStartsOn]="1" [refresh]="refresh" [locale]="locale">
+		</iq-calendar-week-hours-view>
+
+		<!-- <ion-row>
 		   <ion-col col-12 col-md-3>
 			   <ion-row>
 				   <ion-label>
@@ -78,22 +87,22 @@
 					   <span  [style.background]="item.color" class="doctors-rowdata"> {{ item.name }} </span> </button>
 			   </ion-list>
 		   </ion-col>
-	   </ion-row>
+	   </ion-row> -->
 	</div>
 	<div *ngIf="isListView">
 		<ion-grid>
 			<ion-row *ngFor="let data of listevents">
-			  <ion-col>
+				<ion-col>
 					{{data.time}}
-			  </ion-col>
-			  <ion-col>
+				</ion-col>
+				<ion-col>
 					{{data.patientName}}
-			  </ion-col>
-			  <ion-col>
+				</ion-col>
+				<ion-col>
 					{{data.reason}}
-			  </ion-col>
+				</ion-col>
 			</ion-row>
-		  </ion-grid>
+		</ion-grid>
 	</div>
-	
+
 </ion-content>

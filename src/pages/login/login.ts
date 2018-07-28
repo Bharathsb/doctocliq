@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { IonicPage, NavController, NavParams, Modal, ModalController, ModalOptions } from 'ionic-angular';
 import { TabspatientPage } from '../tabspatient/tabspatient';
 import { TabsdoctorPage } from '../tabsdoctor/tabsdoctor';
@@ -16,14 +16,12 @@ import { AppointmentStep3Page } from '../appointment-step3/appointment-step3';
   selector: 'page-login',
   templateUrl: 'login.html',
 })
-export class LoginPage {
+export class LoginPage implements OnInit {
   registerForm: FormGroup;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, private modal: ModalController,
     public translateService: TranslateService
     , public api: Api, public shared: Shared, formBuilder: FormBuilder, ) {
-      sessionStorage.clear();
-      localStorage.clear();
       this.registerForm = formBuilder.group({
       password: ['', Validators.compose([Validators.required, Validators.minLength(6)])],
       phone: ['', Validators.compose([Validators.required, Validators.minLength(9), Validators.maxLength(9)])],
@@ -125,13 +123,14 @@ export class LoginPage {
 
   login() {
     if (this.validate()) {
+      this.shared.removeCookies();
       this.shared.showLoading(this.translateService.instant('loading'))
       let body = { "username": this.registerForm.value.phone, "password": this.registerForm.value.password };
       let seq = this.api.authpost("/login/", body,true)
       // let seq = this.api.authpost("http://www.doctocliq.com/rest-auth/login/", body,true)
-      seq.map(res => res.json()).subscribe(res => {
+      seq.map(res => {  
+        return res.json()} ).subscribe(res => {
         this.shared.hideLoading()
-        console.log(res)
         if (res.patient) {
           this.shared.loggedIn(res.patient, 'login')
           if (this.navParams.get('item')) {
@@ -175,6 +174,10 @@ export class LoginPage {
     const myModal: Modal = this.modal.create(ModalforgotpasswordPage, myModalOptions);
 
     myModal.present();
+  }
+
+  ngOnInit(){
+    this.shared.clearStroage();
   }
 
 }

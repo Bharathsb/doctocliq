@@ -7,7 +7,8 @@ import { Api } from '../../providers/api/api';
 import { TranslateService } from '@ngx-translate/core';
 import { PopOverPage } from '../../pages/popoverMenuItem';
 import * as moment from 'moment';
-
+import { CreateAppointmentComponent } from '../../pages/createappointment';
+import { CreatePatientComponent } from '../../pages/createpatient';
 
 import {
   startOfDay,
@@ -106,22 +107,30 @@ export class Tabclinic1Page implements OnInit {
   { "id": 6, "color": "#D79DBA" },];
   isListView: boolean;
   listViewDate: any;
+  doctorName: string;
 
   constructor(public navCtrl: NavController, private alertCtrl: AlertController, public translateService: TranslateService
     , public api: Api, public shared: Shared,
     public popoverCtrl: PopoverController) {
     this.isListView = false;
+    this.doctorName = undefined;
   }
 
 
 
   handleEvent(event: CalendarEvent): void {
-    let alert = this.alertCtrl.create({
-      title: event.title,
-      message: event.start + ' to ' + event.end,
-      buttons: ['OK']
-    });
-    alert.present();
+
+    if(event.title === 'Available'){
+      this.navCtrl.push(CreatePatientComponent);
+    }else{
+
+    }
+    // let alert = this.alertCtrl.create({
+    //   title: event.title,
+    //   message: event.start + ' to ' + event.end,
+    //   buttons: ['OK']
+    // });
+    // alert.present();
   }
 
   eventTimesChanged({ event, newStart, newEnd }: CalendarEventTimesChangedEvent): void {
@@ -168,24 +177,31 @@ export class Tabclinic1Page implements OnInit {
       this._enddayOfWeek = this.enddayOfWeek.toDateString().substring(4, 10);
       this.getAppointments(this.startdayOfWeek, this.enddayOfWeek, false);
     } else {
-      let tmp_date = addDays(startOfWeek(this.viewDate), 1);
-      this.getAppointments(tmp_date, undefined, true);
-      this.listViewDate = moment(tmp_date).format('ddd MMM DD')
+      let tmpdate = moment(this.listViewDate, "DD/MM/YYYY").add(1, 'days').toDate();
+      if (moment(tmpdate).isoWeekday() === 7) {
+        tmpdate = moment(tmpdate).add(1, 'days').toDate();
+      } 
+      this.listViewDate = moment(tmpdate).format('ddd MMM DD');
+      this.getAppointments(tmpdate, undefined, true);
     }
   }
 
-  // decrement(): void {
-  //   if (!this.isListView) {
-  //     this.startdayOfWeek = addDays(startOfWeek(this.viewDate), 1);
-  //     this._startdayOfWeek = this.startdayOfWeek.toDateString().substring(4, 10);
-  //     this.enddayOfWeek = endOfWeek(this.viewDate);
-  //     this._enddayOfWeek = this.enddayOfWeek.toDateString().substring(4, 10);
-  //     this.getAppointments(this.startdayOfWeek, this.enddayOfWeek, false);
-  //   } else {
-  //     this.getAppointments(this.viewDate, undefined, true);
-  //     this.listViewDate = moment(this.viewDate).format('ddd MMM DD')
-  //   }
-  // }
+  decrement(): void {
+    if (!this.isListView) {
+      this.startdayOfWeek = addDays(startOfWeek(this.viewDate), 1);
+      this._startdayOfWeek = this.startdayOfWeek.toDateString().substring(4, 10);
+      this.enddayOfWeek = endOfWeek(this.viewDate);
+      this._enddayOfWeek = this.enddayOfWeek.toDateString().substring(4, 10);
+      this.getAppointments(this.startdayOfWeek, this.enddayOfWeek, false);
+    } else {
+      let tmpdate = moment(this.listViewDate, "DD/MM/YYYY").add(-1, 'days').toDate();
+      if (moment(tmpdate).isoWeekday() === 7) {
+        tmpdate = moment(tmpdate).add(-1, 'days').toDate();
+      } 
+      this.listViewDate = moment(tmpdate).format('ddd MMM DD');
+      this.getAppointments(tmpdate, undefined, true);
+    }
+  }
 
   today(): void {
     this.changeDate(new Date());
@@ -193,7 +209,7 @@ export class Tabclinic1Page implements OnInit {
       this.getAppointments(this.viewDate, undefined, false);
     } else {
       this.getAppointments(this.viewDate, undefined, true);
-      this.listViewDate = moment(this.viewDate).format('ddd MMM DD')
+      this.listViewDate = moment(this.viewDate).format('ddd MMM DD');
     }
   }
 
@@ -214,9 +230,9 @@ export class Tabclinic1Page implements OnInit {
   }
 
   ngOnInit() {
+    this.listViewDate = moment(this.viewDate).format('ddd MMM DD');
     this.getAppointments(this.startdayOfWeek, this.enddayOfWeek, false);
     this.api.get("clinics/get_doctors/").map(res => res.json()).subscribe(res => {
-      console.log(res)
       this.doctors = [];
       res.doctors.forEach((data) => {
         let doctorObj = {
@@ -235,10 +251,10 @@ export class Tabclinic1Page implements OnInit {
   private openMenu() {
     const myModalOptions: PopoverOptions = {
       showBackdrop: true,
-      enableBackdropDismiss: false
+      enableBackdropDismiss: true
     };
-    let menuItem = [{ id: 1, name: "New appointment" }, { id: 2, name: "New patient" }, { id: 3, name: "Legend" }];
-    const myModal: Popover = this.popoverCtrl.create(PopOverPage, { item: menuItem, doctorlist: this.doctors }, );
+    let menuItem = [{ id: 1, name: "New appointment" }, { id: 2, name: "New patient" }];
+    const myModal: Popover = this.popoverCtrl.create(PopOverPage, { item: menuItem, doctorlist: this.doctors, type: 'menu' }, );
     myModal.onDidDismiss(item => {
 
     });
@@ -260,9 +276,9 @@ export class Tabclinic1Page implements OnInit {
       if (!showListView) {
         this.loadEvents(res.appointment);
       } else {
-        this.loadListEvents(res.appointment);
+        this.loadListEvents(res.appointment,fromDate);
       }
-
+      this.shared.hideLoading();
     }, err => {
       console.error('ERROR', err)
       this.shared.hideLoading();
@@ -270,28 +286,32 @@ export class Tabclinic1Page implements OnInit {
     });
   }
 
-  private loadEvents(appointments: any) {
+  private loadEvents(appointments: any[]) {
     this.events = [];
-    appointments.forEach((data) => {
-      let newEvent: CalendarEvent = {
-        start: new Date(data.start),
-        end: new Date(data.end),
-        title: data.patient.first_name,
-        cssClass: 'custom-event',
-        color: {
-          primary: '#488aff',
-          secondary: this.getColor(data.doctor.id)
+    try {
+      appointments.forEach((data) => {
+        let newEvent: CalendarEvent = {
+          start: new Date(data.start),
+          end: new Date(data.end),
+          title: data.patient.first_name,
+          cssClass: 'custom-event',
+          color: {
+            primary: '#488aff',
+            secondary: this.getColor(data.doctor.id)
+          }
         }
-      }
-      this.events.push(newEvent);
-    });
-    this.shared.hideLoading();
+        this.events.push(newEvent);
+      });
+    } catch (err) {
+      this.shared.hideLoading();
+      this.shared.ShowToast("No Appoinments");
+    }
   }
 
-  private loadListEvents(appointments: any) {
+  private loadListEvents(appointments: any[], listDate) {
     this.listevents = [];
-    try{
-      appointments.filter((appointmentData) => (moment(appointmentData.start).format('DD/MM/YYYY') === moment(this.viewDate).format('DD/MM/YYYY'))).forEach((data) => {
+    try {
+      appointments.filter((appointmentData) => (moment(appointmentData.start).format('DD/MM/YYYY') === moment(listDate).format('DD/MM/YYYY'))).forEach((data) => {
         let newPatient = {
           time: moment(data.start).format('HH:mm A'),
           patientName: data.patient.first_name,
@@ -299,24 +319,28 @@ export class Tabclinic1Page implements OnInit {
         }
         this.listevents.push(newPatient);
       });
+    } catch (err) {
       this.shared.hideLoading();
-    }catch(err){
       this.shared.ShowToast(err);
     }
-    
+
   }
 
   private selectedDoctor(doctor) {
-    let filteredAppointments = this.listAppointments.appointment.filter((data) => (data.doctor.id === doctor.id));
+    let filteredAppointments = [];
+    this.shared.showLoading(this.translateService.instant('loading'));
     let url = "clinics/get_workschedules/?doctor_id=" + doctor.id + "&date=" + moment(this.startdayOfWeek).format('DD/MM/YYYY') + "&date_last=" + moment(this.enddayOfWeek).format('DD/MM/YYYY');
     this.api.get(url).map(res => res.json()).subscribe(res => {
-      this.loadEvents(filteredAppointments);
+      if (this.listAppointments && this.listAppointments.appointment) {
+        filteredAppointments = this.listAppointments.appointment.filter((data) => (data.doctor.id === doctor.id));
+        this.loadEvents(filteredAppointments);
+      }
       if (res.length > 0) {
         res.forEach((data) => {
           let newEvent: CalendarEvent = {
             start: new Date(data.date + "T" + data.time_start),
             end: new Date(data.date + "T" + data.time_end),
-            title: '',
+            title: 'Available',
             cssClass: 'custom-event',
             color: {
               primary: '#488aff',
@@ -326,7 +350,9 @@ export class Tabclinic1Page implements OnInit {
           this.events.push(newEvent);
         });
       }
+      this.shared.hideLoading();
     }, err => {
+      this.shared.hideLoading();
       console.error('ERROR', err)
     });
 
@@ -342,13 +368,39 @@ export class Tabclinic1Page implements OnInit {
   }
 
 
-  private loadListData(listValue: boolean) {
-    if (listValue) {
-      this.listViewDate = moment(this.viewDate).format('ddd MMM DD');
+  private loadListData() {
+    if (this.isListView) {
       this.getAppointments(this.viewDate, undefined, true);
     } else {
       this.increment();
     }
+  }
+
+  private filterDoctors() {
+    const myModalOptions: PopoverOptions = {
+      showBackdrop: true,
+      enableBackdropDismiss: true
+    };
+    const myModal: Popover = this.popoverCtrl.create(PopOverPage, { doctorlist: this.doctors, type: 'filter' }, );
+    myModal.onWillDismiss(doctor => {
+      if (doctor) {
+        this.doctorName = doctor.name;
+        this.selectedDoctor(doctor);
+      }
+    });
+    myModal.present();
+  }
+  private removeFilterDoctors() {
+    this.doctorName = undefined;
+    if (this.listAppointments && this.listAppointments.appointment) {
+      this.shared.showLoading(this.translateService.instant('loading'));
+      this.loadEvents(this.listAppointments.appointment);
+      this.shared.hideLoading();
+    } else {
+      this.events = [];
+      this.shared.ShowToast("No Appoinments");
+    }
+
   }
 }
 

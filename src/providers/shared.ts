@@ -1,7 +1,6 @@
 
 import { LoadingController, AlertController, ToastController } from 'ionic-angular'
 import { Injectable } from '@angular/core';
-import { Http, RequestOptions, URLSearchParams, HttpModule } from '@angular/http';
 import 'rxjs/add/operator/map';
 import { Storage } from '@ionic/storage';
 import { Api } from '../providers/api/api';
@@ -95,5 +94,20 @@ export class Shared {
     ShowToast(messaage) {
         let toast = this.toastCtrl.create({ message: messaage, duration: 2000, position: 'bottom' });
         toast.present();
+    }
+
+    clearStroage() {
+        sessionStorage.clear();
+        localStorage.clear();
+    }
+
+    removeCookies() {
+        var cookies = document.cookie.split(";");
+        for (var i = 0; i < cookies.length; i++) {
+            var cookie = cookies[i];
+            var eqPos = cookie.indexOf("=");
+            var name = eqPos > -1 ? cookie.substr(0, eqPos) : cookie;
+            document.cookie = name + "=;expires=Thu, 01 Jan 1970 00:00:00 GMT";
+        }
     }
 }

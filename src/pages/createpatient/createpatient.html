@@ -59,7 +59,7 @@
     <ion-row margin-top>
       <ion-item>
         <ion-label floating>{{'Sex' | translate}}</ion-label>
-        <ion-select formControlName="gender">
+        <ion-select ([ngModel])="patientForm.gender" formControlName="gender">
           <ion-option value="M">{{'Man' | translate}}</ion-option>
           <ion-option value="F">{{'Woman' | translate}}</ion-option>
         </ion-select>
@@ -69,7 +69,7 @@
       <ion-item>
         <ion-label floating>{{'district' | translate}}</ion-label>
         <ion-select formControlName="district">
-          <ion-option *ngFor="let districtObj of list_district" [value]="districtObj.id">{{districtObj.value}}</ion-option>
+          <ion-option *ngFor="let districtObj of list_district" [value]="districtObj.id">{{districtObj.name}}</ion-option>
         </ion-select>
       </ion-item>
     </ion-row>

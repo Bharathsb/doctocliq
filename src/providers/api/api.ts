@@ -14,7 +14,7 @@ export class Api {
   // url: string = '35.229.16.214/api-v1/';
   // ImageUrl: string = '35.229.16.214/';
 
-  //url: string = 'http://www.doctocliq.com/api-v1/';
+   // url: string = 'http://www.doctocliq.com/api-v1/';
    url: string = '/api-v1/';
   ImageUrl: string = 'http://www.doctocliq.com/';
 

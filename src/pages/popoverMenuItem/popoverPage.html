@@ -4,6 +4,15 @@
   See http://ionicframework.com/docs/components/#navigation for more info on
   Ionic pages and navigation.
 -->
+<ion-row *ngIf="type === 'menu'">
 <ion-list *ngFor="let menuItem of menuItems">
     <button ion-item (click)="open(menuItem.id)">{{menuItem.name}}</button>
-  </ion-list>
+</ion-list>
+</ion-row>
+
+<ion-row *ngIf="type === 'filter'">
+    <ion-list>
+      <button ion-item *ngFor="let item of doctorsList" (click)="selectedDoctor(item)" style="cursor: pointer; padding: 4px;">
+        <span  [style.background]="item.color" class="doctors-rowdata"> {{ item.name }} </span> </button>
+    </ion-list>
+</ion-row>

@@ -19,13 +19,13 @@ export class CreatePatientComponent implements OnInit {
 
     ngOnInit() {
         this.patientForm = this.formBuilder.group({
-            first_name  : ['', Validators.required],
-            last_name: ['', Validators.required],
+            first_name  : ['sb', Validators.required],
+            last_name: ['test', Validators.required],
             cel_phone: ['', Validators.required],
             email: ['', Validators.required],
             dni: ['', Validators.required],
             birth_date: ['', Validators.required],
-            gender: ['', Validators.required],
+            gender: ['M', Validators.required],
             district: ['', Validators.required],
         });
         this.list_district = this.shared.districtlist;

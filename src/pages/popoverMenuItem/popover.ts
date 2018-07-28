@@ -19,10 +19,11 @@ import { CreatePatientComponent } from '../../pages/createpatient';
 export class PopOverPage {
   menuItems;
   doctorsList: any;
-
+  type: string;
   constructor(private navParams: NavParams, public viewCtrl: ViewController, public navCtrl: NavController) {
     this.menuItems = this.navParams.get('item');
     this.doctorsList = this.navParams.get('doctorlist');
+    this.type = this.navParams.get('type');
   }
 
   close() {
@@ -33,12 +34,12 @@ export class PopOverPage {
     this.close();
     if( id === 1 ){
       this.navCtrl.push(CreateAppointmentComponent, { doctorlist: this.doctorsList });
-    }else if(id === 2){
+    }else {
       this.navCtrl.push(CreatePatientComponent);
-    }else if(id === 3){
-      // this.navCtrl.push(CreateAppointmentComponent, { doctorlist: this.doctorsList });
     }
-    
   }
 
+  private selectedDoctor(doctor) {
+    this.viewCtrl.dismiss(doctor);
+  }
 }
