@@ -248,7 +248,7 @@ export class Tabclinic1Page implements OnInit {
     });
   }
 
-  private openMenu() {
+  private openMenu(myEvent) {
     const myModalOptions: PopoverOptions = {
       showBackdrop: true,
       enableBackdropDismiss: true
@@ -258,7 +258,9 @@ export class Tabclinic1Page implements OnInit {
     myModal.onDidDismiss(item => {
 
     });
-    myModal.present();
+    myModal.present({
+      ev: myEvent
+    });
   }
 
   private getAppointments(fromDate: any, toDate: any, showListView: boolean) {
