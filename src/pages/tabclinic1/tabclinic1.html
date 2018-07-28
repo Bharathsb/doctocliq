@@ -59,7 +59,11 @@
 						</ion-col>
 					</ion-row>
 				</ion-col>
-				<ion-col col-2 no-padding >
+				<ion-col col-4 no-padding>
+					<ion-toggle class='pull-right' toggle-class="toggle-assertive" [(ngModel)]="isListView" (ionChange)="loadListData()">
+					</ion-toggle>
+				</ion-col>
+				<ion-col col-12 no-padding  class='pull-right'>
 					<div *ngIf="!isListView">
 						<button *ngIf="doctorName === undefined" ion-button class='pull-right' (click)="filterDoctors($event)">
 							<!-- <ion-icon name="menu"></ion-icon> -->
@@ -69,14 +73,12 @@
 							<!-- <ion-icon name="menu"></ion-icon> -->
 							Clear Filter
 						</button>
+						<ion-badge style='margin-top: 20px;' *ngIf="doctorName !== undefined" item-end>{{doctorName}}</ion-badge>
 					</div>
-				</ion-col>
-				<ion-col col-2 no-padding>
-					<ion-toggle class='pull-right' toggle-class="toggle-assertive" [(ngModel)]="isListView" (ionChange)="loadListData()">
-					</ion-toggle>
 				</ion-col>
 				
 			</ion-row>
+				
 		</ion-col>
 	</ion-row>
 
@@ -105,6 +107,11 @@
 	</div>
 	<div *ngIf="isListView">
 		<ion-grid>
+			<ion-row>
+				<ion-col><b>Cita</b></ion-col>
+				<ion-col><b>Paciente</b></ion-col>
+				<ion-col><b>razón</b></ion-col>
+			</ion-row>
 			<ion-row *ngFor="let data of listevents">
 				<ion-col>
 					{{data.time}}
