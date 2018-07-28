@@ -13,6 +13,14 @@
 					<ion-label>{{'Agenda' | translate}}</ion-label>
 				</ion-col>
 				<ion-col col-4>
+						<!-- <ion-label>
+								<b>Filter:
+									<button ion-button >
+										<span (click)="filterDoctors()"  *ngIf="doctorName === undefined">{{ 'Select' | translate }}</span>
+										<span (click)="removeFilterDoctors()">{{doctorName}} <ion-icon name="close" *ngIf="doctorName !== undefined"></ion-icon></span>
+									</button>
+								</b>
+							</ion-label> -->
 					<button ion-button class='pull-right' (click)="openMenu($event)">
 						<!-- <ion-icon name="menu"></ion-icon> -->
 						<ion-icon name="more"></ion-icon>
@@ -25,7 +33,7 @@
 
 <ion-content>
 	<ion-row>
-		<ion-col col-12 col-md-3>
+		<ion-col col-12 col-md-12>
 			<ion-row>
 				<ion-col col-4 no-padding>
 					<ion-label class="label-startendday">
@@ -51,24 +59,29 @@
 						</ion-col>
 					</ion-row>
 				</ion-col>
-				<ion-col col-2 no-padding></ion-col>
+				<ion-col col-2 no-padding >
+					<div *ngIf="!isListView">
+						<button *ngIf="doctorName === undefined" ion-button class='pull-right' (click)="filterDoctors($event)">
+							<!-- <ion-icon name="menu"></ion-icon> -->
+							<ion-icon name="ios-funnel-outline"></ion-icon>
+						</button>
+						<button *ngIf="doctorName !== undefined" ion-button class='pull-right' (click)="removeFilterDoctors($event)">
+							<!-- <ion-icon name="menu"></ion-icon> -->
+							Clear Filter
+						</button>
+					</div>
+				</ion-col>
 				<ion-col col-2 no-padding>
-					<ion-toggle toggle-class="toggle-assertive" [(ngModel)]="isListView" (ionChange)="loadListData()">
+					<ion-toggle class='pull-right' toggle-class="toggle-assertive" [(ngModel)]="isListView" (ionChange)="loadListData()">
 					</ion-toggle>
 				</ion-col>
+				
 			</ion-row>
 		</ion-col>
 	</ion-row>
 
 	<div *ngIf="!isListView">
-		<ion-label>
-			<b>Filter:
-				<button ion-button >
-					<span (click)="filterDoctors()"  *ngIf="doctorName === undefined">{{ 'Select' | translate }}</span>
-					<span (click)="removeFilterDoctors()">{{doctorName}} <ion-icon name="close" *ngIf="doctorName !== undefined"></ion-icon></span>
-				</button>
-			</b>
-		</ion-label>
+		
 		<iq-calendar-week-hours-view [viewDate]="viewDate" [events]="events" [excludeDays]="excludeDays" [hourSegments]="2" [dayStartHour]="9"
 		 [dayEndHour]="21" (eventClicked)="handleEvent($event.event)" (hourSegmentClicked)="hourSegmentClicked($event)" (eventTimesChanged)="eventTimesChanged($event)"
 		 [weekStartsOn]="1" [refresh]="refresh" [locale]="locale">

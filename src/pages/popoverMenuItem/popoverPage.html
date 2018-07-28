@@ -12,7 +12,7 @@
 
 <ion-row *ngIf="type === 'filter'">
     <ion-list>
-      <button ion-item *ngFor="let item of doctorsList" (click)="selectedDoctor(item)" style="cursor: pointer; padding: 4px;">
+      <button ion-item *ngFor="let item of doctorsList" (click)="selectedDoctor(item)" style="cursor: pointer; margin-left: 10px; padding: 4px;">
         <span  [style.background]="item.color" class="doctors-rowdata"> {{ item.name }} </span> </button>
     </ion-list>
 </ion-row>

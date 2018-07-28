@@ -378,7 +378,7 @@ export class Tabclinic1Page implements OnInit {
     }
   }
 
-  private filterDoctors() {
+  private filterDoctors(mEvent) {
     const myModalOptions: PopoverOptions = {
       showBackdrop: true,
       enableBackdropDismiss: true
@@ -390,9 +390,11 @@ export class Tabclinic1Page implements OnInit {
         this.selectedDoctor(doctor);
       }
     });
-    myModal.present();
+    myModal.present({
+      ev: mEvent
+    });
   }
-  private removeFilterDoctors() {
+  private removeFilterDoctors(mEvent) {
     this.doctorName = undefined;
     if (this.listAppointments && this.listAppointments.appointment) {
       this.shared.showLoading(this.translateService.instant('loading'));
