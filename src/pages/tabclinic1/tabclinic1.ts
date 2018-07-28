@@ -123,7 +123,7 @@ export class Tabclinic1Page implements OnInit {
     if(event.title === 'Available'){
       this.navCtrl.push(CreatePatientComponent);
     }else{
-
+      this.navCtrl.push(CreateAppointmentComponent);
     }
     // let alert = this.alertCtrl.create({
     //   title: event.title,
@@ -230,7 +230,6 @@ export class Tabclinic1Page implements OnInit {
   }
 
   ngOnInit() {
-    this.listViewDate = moment(this.viewDate).format('ddd MMM DD');
     this.getAppointments(this.startdayOfWeek, this.enddayOfWeek, false);
     this.api.get("clinics/get_doctors/").map(res => res.json()).subscribe(res => {
       this.doctors = [];
@@ -372,6 +371,7 @@ export class Tabclinic1Page implements OnInit {
 
   private loadListData() {
     if (this.isListView) {
+      this.listViewDate = moment(this.viewDate).format('ddd MMM DD');
       this.getAppointments(this.viewDate, undefined, true);
     } else {
       this.increment();
