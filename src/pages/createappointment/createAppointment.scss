@@ -1,3 +1,24 @@
 page-modalappointment {
 
 }
+
+.appointment-header .toolbar-background-md{
+    background: #004D99;
+}
+.appointment-header button, .appointment-header .toolbar-title {
+    color: #fff;
+}
+
+.appointment-btn{
+    text-align: center;
+    display: block;
+}
+
+.appointment-btn button{
+    width: auto;
+    display: inline-block
+}
+.rowdata{
+    margin-left: 10px;
+    color: #999;
+}

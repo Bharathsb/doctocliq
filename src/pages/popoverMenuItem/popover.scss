@@ -7,3 +7,19 @@ page-modalfilters {
     font-size: 14px;
     font-family: 'Open Sans', sans-serif;
 }
+
+.filter-doctor-list ion-list button {
+    // width: 85%;
+    margin-bottom: 15px;
+    margin-left: 10px;
+    // margin-left: 20px;
+    padding-left: 25px;
+}
+
+.filter-doctor-list ion-list button .ion-md-checkmark {position: absolute;left: 5px;}
+
+.filter-doctor-list ion-row.view-all-button {
+    display: block;
+    width: 100%;
+    text-align: right;
+}

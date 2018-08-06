@@ -123,13 +123,10 @@ export class LoginPage implements OnInit {
 
   login() {
     if (this.validate()) {
-      this.shared.removeCookies();
       this.shared.showLoading(this.translateService.instant('loading'))
       let body = { "username": this.registerForm.value.phone, "password": this.registerForm.value.password };
-      let seq = this.api.authpost("/login/", body,true)
-      // let seq = this.api.authpost("http://www.doctocliq.com/rest-auth/login/", body,true)
-      seq.map(res => {  
-        return res.json()} ).subscribe(res => {
+      let seq = this.api.authpost(this.api.loginUrl, body,true)
+      seq.map(res => res.json()).subscribe(res => {
         this.shared.hideLoading()
         if (res.patient) {
           this.shared.loggedIn(res.patient, 'login')
@@ -157,7 +154,7 @@ export class LoginPage implements OnInit {
         this.shared.ShowToast(err);
       });
     } 
-     //this.navCtrl.push(TabsclinicPage);
+     // this.navCtrl.push(TabsclinicPage);
   }
 
   openForgotpasswordModal() {
@@ -178,6 +175,9 @@ export class LoginPage implements OnInit {
 
   ngOnInit(){
     this.shared.clearStroage();
+    this.api.clearSession().map(res => res).subscribe(res => {
+    }, err => {
+      this.shared.ShowToast(err);
+    }); 
   }
-
 }

@@ -14,8 +14,8 @@ export class Api {
   // url: string = '35.229.16.214/api-v1/';
   // ImageUrl: string = '35.229.16.214/';
 
-   // url: string = 'http://www.doctocliq.com/api-v1/';
-   url: string = '/api-v1/';
+  url: string = 'http://www.doctocliq.com/api-v1/';
+  // url: string = '/api-v1/';
   ImageUrl: string = 'http://www.doctocliq.com/';
 
   apipatients: string = 'patients/'
@@ -31,6 +31,18 @@ export class Api {
   apireason: string = "reasons/list_by_establishment/"
   apicreatappointments: string = "/appointments/"
   apischedule: string = "schedules/get_work_schedule_short_view/?establishment_id="
+  sessionClearUrl: string = "http://www.doctocliq.com/salir/";
+  loginUrl: string ='http://www.doctocliq.com/rest-auth/login/';
+  // loginUrl: string ='/login/';
+  // sessionClearUrl: string = "/salir/";
+  createPatient: string= "clinics/create_patient/";
+  createAppointment: string= "clinics/create_appointment/";
+  apiDoctorList: string = "clinics/get_doctors/";
+  apiAppointments: string= "clinics/get_appointment/";
+  apiPaitentList: string= "clinics/get_patients/";
+  deleteAppointment: string= "clinics/remove_appointment/";
+  updateAppoinmetnt: string = "clinics/update_appointment/";
+
   constructor(public http: Http) {
     
   }
@@ -98,6 +110,9 @@ export class Api {
       url = endpoint;
     }
     return this.http.post(url, body, options);
+  }
+  clearSession(){
+   return this.http.get(this.sessionClearUrl);
   }
 
 }

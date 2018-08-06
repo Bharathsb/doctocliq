@@ -54,6 +54,7 @@ import { PatientsmsPage } from '../pages/patientsms/patientsms';
 
 import { Searchbar1Page } from '../pages/searchbar1/searchbar1';
 import { Searchbar2Page } from '../pages/searchbar2/searchbar2';
+import { Searchbar3Page } from '../pages/searchbar3/searchbar3';
 
 import { AppointmentStep2Page } from '../pages/appointment-step2/appointment-step2';
 import { AppointmentStep3Page } from '../pages/appointment-step3/appointment-step3';
@@ -125,7 +126,8 @@ registerLocaleData(localeEs);
     Search,ArrayFilterPipe,
     PopOverPage,
     CreateAppointmentComponent,
-    CreatePatientComponent
+    CreatePatientComponent,
+    Searchbar3Page
   ],
   imports: [
     BrowserModule,
@@ -179,7 +181,8 @@ registerLocaleData(localeEs);
     AppointmentStep4Page,
     PopOverPage,
     CreateAppointmentComponent,
-    CreatePatientComponent
+    CreatePatientComponent,
+    Searchbar3Page
   ],
   providers: [
     StatusBar,

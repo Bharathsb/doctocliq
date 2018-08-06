@@ -7,6 +7,10 @@
   },
   "proxies": [
     {
+      "path": "/salir/",
+      "proxyUrl": "http://www.doctocliq.com/salir/"
+    },
+    {
       "path": "/api-v1/",
       "proxyUrl": "http://www.doctocliq.com/api-v1/"
     },

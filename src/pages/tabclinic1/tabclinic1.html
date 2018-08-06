@@ -5,26 +5,20 @@
 		<ion-title>
 			<ion-row>
 				<ion-col col-4>
-					<button ion-button full clear icon-only mwlCalendarPreviousView [view]="view" [(viewDate)]="viewDate">
-						<ion-icon name="ios-arrow-back"></ion-icon>{{'Back' | translate}}
+					<button ion-button>
+						<ion-icon name="ios-arrow-back"></ion-icon> {{'Back' | translate}}
 					</button>
 				</ion-col>
 				<ion-col col-4 text-center>
 					<ion-label>{{'Agenda' | translate}}</ion-label>
 				</ion-col>
-				<ion-col col-4>
-						<!-- <ion-label>
-								<b>Filter:
-									<button ion-button >
-										<span (click)="filterDoctors()"  *ngIf="doctorName === undefined">{{ 'Select' | translate }}</span>
-										<span (click)="removeFilterDoctors()">{{doctorName}} <ion-icon name="close" *ngIf="doctorName !== undefined"></ion-icon></span>
-									</button>
-								</b>
-							</ion-label> -->
-					<button ion-button class='pull-right' (click)="openMenu($event)">
-						<!-- <ion-icon name="menu"></ion-icon> -->
-						<ion-icon name="more"></ion-icon>
-					</button>
+				<ion-col col-4 text-right>
+						<button ion-button class="filter-icon" *ngIf="!isListView" (click)="filterDoctors($event)">
+							<ion-icon name="ios-funnel-outline"></ion-icon>
+						</button>
+						<button ion-button class="menu-icon" (click)="openMenu($event)">
+							<ion-icon name="menu"></ion-icon>
+						</button>
 				</ion-col>
 			</ion-row>
 		</ion-title>
@@ -42,7 +36,7 @@
 					</ion-label>
 				</ion-col>
 				<ion-col col-4 no-padding>
-					<ion-row>
+					<ion-row *ngIf="!isListView">
 						<ion-col col-2 no-padding>
 							<button ion-button full clear icon-only mwlCalendarPreviousView [view]="view" [(viewDate)]="viewDate" (click)="decrement()"
 							 [disabled]="prevBtnDisabled">
@@ -58,61 +52,65 @@
 							</button>
 						</ion-col>
 					</ion-row>
+					<ion-row *ngIf="isListView">
+						<ion-col col-2 no-padding>
+							<button ion-button full clear icon-only (click)="decrement()">
+								<ion-icon name="ios-arrow-back"></ion-icon>
+							</button>
+						</ion-col>
+						<ion-col col-8 no-padding>
+							<button ion-button full clear mwlCalendarToday [(viewDate)]="viewDate" (click)="today()">Today</button>
+						</ion-col>
+						<ion-col col-2 no-padding>
+							<button ion-button full clear icon-only (click)="increment()">
+								<ion-icon name="ios-arrow-forward"></ion-icon>
+							</button>
+						</ion-col>
+					</ion-row>
 				</ion-col>
 				<ion-col col-4 no-padding>
 					<ion-toggle class='pull-right' toggle-class="toggle-assertive" [(ngModel)]="isListView" (ionChange)="loadListData()">
 					</ion-toggle>
 				</ion-col>
-				<ion-col col-12 no-padding  class='pull-right'>
+				<!-- <ion-col col-12 no-padding class='pull-right'>
 					<div *ngIf="!isListView">
 						<button *ngIf="doctorName === undefined" ion-button class='pull-right' (click)="filterDoctors($event)">
-							<!-- <ion-icon name="menu"></ion-icon> -->
 							<ion-icon name="ios-funnel-outline"></ion-icon>
 						</button>
 						<button *ngIf="doctorName !== undefined" ion-button class='pull-right' (click)="removeFilterDoctors($event)">
-							<!-- <ion-icon name="menu"></ion-icon> -->
 							Clear Filter
 						</button>
 						<ion-badge style='margin-top: 20px;' *ngIf="doctorName !== undefined" item-end>{{doctorName}}</ion-badge>
 					</div>
-				</ion-col>
-				
+				</ion-col> -->
+
 			</ion-row>
-				
+
 		</ion-col>
 	</ion-row>
 
 	<div *ngIf="!isListView">
-		
+
 		<iq-calendar-week-hours-view [viewDate]="viewDate" [events]="events" [excludeDays]="excludeDays" [hourSegments]="2" [dayStartHour]="9"
-		 [dayEndHour]="21" (eventClicked)="handleEvent($event.event)" (hourSegmentClicked)="hourSegmentClicked($event)" (eventTimesChanged)="eventTimesChanged($event)"
+		 [dayEndHour]="21" (eventClicked)="handleEvent($event.event)" (eventTimesChanged)="eventTimesChanged($event)"
 		 [weekStartsOn]="1" [refresh]="refresh" [locale]="locale">
 		</iq-calendar-week-hours-view>
 
-		<!-- <ion-row>
-		   <ion-col col-12 col-md-3>
-			   <ion-row>
-				   <ion-label>
-					   <b>Doctores:
-						   <button ion-button (click)="loadEvents(listAppointments.appointment)">{{'See all' | translate}}</button>
-					   </b>
-				   </ion-label>
-			   </ion-row>
-			   <ion-list>
-				   <button ion-item *ngFor="let item of doctors" (click)="selectedDoctor(item)" style="cursor: pointer; padding: 4px;">
-					   <span  [style.background]="item.color" class="doctors-rowdata"> {{ item.name }} </span> </button>
-			   </ion-list>
-		   </ion-col>
-	   </ion-row> -->
 	</div>
 	<div *ngIf="isListView">
 		<ion-grid>
-			<ion-row>
-				<ion-col><b>Cita</b></ion-col>
-				<ion-col><b>Paciente</b></ion-col>
-				<ion-col><b>razón</b></ion-col>
+			<ion-row class="grid-row">
+				<ion-col>
+					<b>Cita</b>
+				</ion-col>
+				<ion-col>
+					<b>Paciente</b>
+				</ion-col>
+				<ion-col>
+					<b>razón</b>
+				</ion-col>
 			</ion-row>
-			<ion-row *ngFor="let data of listevents">
+			<ion-row class="grid-row" *ngFor="let data of listevents">
 				<ion-col>
 					{{data.time}}
 				</ion-col>

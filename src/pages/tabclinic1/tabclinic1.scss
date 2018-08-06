@@ -31,6 +31,7 @@ page-tabclinic1 {
         color: #fff !important;
         font-weight: bold;
         text-decoration: none;
+        font-size: 1em;
     }
  
     .cal-day-view .cal-event {
@@ -72,8 +73,24 @@ page-tabclinic1 {
     }
     .custom-event{
         font-size: 1em;
+        color: black;
     }
- 
+    .grid-row{
+      padding: 10px;
+      border-bottom: 1px solid #dcd8d8;
+    }
+    .custom-event-none a {
+        color: rgb(202, 255, 227) !important;
+        font-weight: bold;
+        text-decoration: none;
+        font-size: 1em;
+    }
+    // button.filter-icon{
+    //     padding: 10px;
+    // }
+    .filter-width{
+        width: 85%;
+     }
 
 }
 

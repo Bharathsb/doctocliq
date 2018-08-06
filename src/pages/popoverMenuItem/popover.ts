@@ -20,10 +20,12 @@ export class PopOverPage {
   menuItems;
   doctorsList: any;
   type: string;
+  filteredId: string;
   constructor(private navParams: NavParams, public viewCtrl: ViewController, public navCtrl: NavController) {
     this.menuItems = this.navParams.get('item');
     this.doctorsList = this.navParams.get('doctorlist');
     this.type = this.navParams.get('type');
+    this.filteredId = this.navParams.get('filteredId');
   }
 
   close() {
@@ -31,15 +33,21 @@ export class PopOverPage {
   }
   
   open(id: any) {
-    this.close();
     if( id === 1 ){
-      this.navCtrl.push(CreateAppointmentComponent, { doctorlist: this.doctorsList });
+      this.viewCtrl.dismiss("1");
     }else {
+      this.close();
       this.navCtrl.push(CreatePatientComponent);
     }
   }
 
-  private selectedDoctor(doctor) {
+  private selectedDoctor(doctor,type) {
+    if(type === 'load'){
+      doctor['type'] = type;
+    } else if(type === 'loadAll') {
+      let tempdoctor ={'type': type};
+      doctor = tempdoctor;
+    }
     this.viewCtrl.dismiss(doctor);
   }
 }

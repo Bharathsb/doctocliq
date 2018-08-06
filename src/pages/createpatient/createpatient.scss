@@ -1,3 +1,23 @@
 page-modalfilters {
 
 }
+.mandatory{
+    color: red;
+}
+
+.patient-header .toolbar-background-md{
+    background: #004D99;
+}
+.patient-header button, .patient-header .toolbar-title {
+    color: #fff;
+}
+
+.patient-btn{
+    text-align: center;
+    display: block;
+}
+
+.patient-btn button{
+    width: auto;
+    display: inline-block
+}
