@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { IonicPage, NavParams, ViewController, ModalController, NavController } from 'ionic-angular';
+import { IonicPage, NavParams, ViewController, ModalController } from 'ionic-angular';
 import { TranslateService } from '@ngx-translate/core';
 import { Shared } from '../../providers/shared';
 import { Validators, FormBuilder, FormGroup } from '@angular/forms';
@@ -7,7 +7,6 @@ import { Api } from '../../providers/api/api';
 import { AppointmentModel } from './appointment.model';
 import * as moment from 'moment';
 import { AlertController } from 'ionic-angular/components/alert/alert-controller';
-import { TabsclinicPage } from '../tabsclinic/tabsclinic';
 import { Searchbar3Page } from '../searchbar3/searchbar3';
 
 @IonicPage()
@@ -31,7 +30,7 @@ export class CreateAppointmentComponent implements OnInit {
   type: string;
   lista_estados: any;
   patientName: any;
-  constructor(private nav: NavController, private navParams: NavParams, private view: ViewController, public shared: Shared,
+  constructor(private navParams: NavParams, private view: ViewController, public shared: Shared,
     public translateService: TranslateService, public modalCtrl: ModalController, public formBuilder: FormBuilder,
     public api: Api, private alertCtrl: AlertController) {
     this.doctorsList = this.navParams.get("doctorlist");
@@ -40,6 +39,7 @@ export class CreateAppointmentComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.shared.setCurrentPage("createAppointment");
     this.appointmentModel = new AppointmentModel();
     this.loadMotivo();
     if (this.type === 'Update') {
@@ -83,11 +83,15 @@ export class CreateAppointmentComponent implements OnInit {
       });
       if (this.appointmentDetail && this.appointmentDetail.length > 0) {
         let doctorObj = this.doctorsList.find((data) => (data.id === this.appointmentDetail[0].doctor));
-        this.onSelectedSpeciality(doctorObj.speciality);
+        let speciality;
+        if (doctorObj) {
+          this.onSelectedSpeciality(doctorObj.speciality);
+          speciality = doctorObj.speciality;
+        }
         this.appointmentForm.patchValue({
           'duracione': 0,
-          'especialidade': doctorObj.speciality,
-          'doctore': this.appointmentDetail[0].doctor,
+          'especialidade': speciality,
+          'doctore': this.appointmentDetail[0].doctor || null,
           'datePicker': this.appointmentDetail[0].date,
           'horario': this.appointmentDetail[0].time_start
         });
@@ -120,21 +124,17 @@ export class CreateAppointmentComponent implements OnInit {
   private getSpecialityList() {
     this.lista_especialidades = [];
     this.lista_especialidades = this.shared.specialitylist;
-    // let speciality = { id: "Urologia", name: "Urologia" };
-    // this.lista_especialidades.push(speciality);
-    // speciality = { id: "Traumatologia", name: "Traumatologia" };
-    // this.lista_especialidades.push(speciality);
-    // speciality = { id: "Ginecología", name: "Ginecología" };
-    // this.lista_especialidades.push(speciality);
-    // speciality = { id: "Nutrición", name: "Nutrición" };
-    // this.lista_especialidades.push(speciality);
-
   }
 
   closeModal() {
+    this.view.dismiss("close");
     // this.nav.pop();
     // this.nav.push(TabsclinicPage);
-    this.view.dismiss("close");
+    // this.view.dismiss("close");
+  }
+
+  redirectToBack(redirectType: string) {
+    this.view.dismiss(redirectType);
   }
 
   creatApointment() {
@@ -157,12 +157,10 @@ export class CreateAppointmentComponent implements OnInit {
         this.shared.hideLoading();
         if (res.status == 200) {
           this.shared.showAlert('¡Cita creada correctamente!');
-          this.view.dismiss("create");
+          this.redirectToBack("create");
         }
       }, err => {
-        this.shared.hideLoading();
-        console.error('ERROR', err)
-        this.shared.ShowToast(err);
+        this.errorlog(err.json(), err);
       });
     } else {
       let errorMsgValidateKey = Object.keys(this.errorMsg);
@@ -190,8 +188,8 @@ export class CreateAppointmentComponent implements OnInit {
   }
 
   private loadHours() {
-    this.list_horario = ["08:30:00", "09:00:00", "09:30:00", "10:00:00", "10:30:00", "11:00:00", "11:30:00", "12:00:00", "12:30:00", "13:00:00", "13:30:00", "14:00:00", "14:30:00", "15:00:00", "15:30:00", "16:00:00",
-      "16:30:00", "17:00:00", "17:30:00", "18:00:00", "18:30:00", "19:00:00", "19:30:00", "20:00:00", "20:30:00", "21:00:00", "21:30:00"];
+    this.list_horario = ["07:00:00", "07:30:00", "08:00:00", "08:30:00", "09:00:00", "09:30:00", "10:00:00", "10:30:00", "11:00:00", "11:30:00", "12:00:00", "12:30:00", "13:00:00", "13:30:00", "14:00:00", "14:30:00", "15:00:00", "15:30:00", "16:00:00",
+      "16:30:00", "17:00:00", "17:30:00", "18:00:00", "18:30:00", "19:00:00", "19:30:00", "20:00:00", "20:30:00", "21:00:00"];
   }
 
   private loadDuration() {
@@ -223,7 +221,7 @@ export class CreateAppointmentComponent implements OnInit {
     }
   }
 
-  private updateApointment() {
+  updateApointment() {
     this.shared.showLoading(this.translateService.instant('loading'));
     let request = {
       'price': Number(this.appointmentModel.reason_price) || 0,
@@ -237,16 +235,14 @@ export class CreateAppointmentComponent implements OnInit {
       this.shared.hideLoading();
       if (res.status == 200) {
         this.shared.showAlert('Cita eliminada correctamente');
-        this.view.dismiss("update");
+        this.redirectToBack("update");
       }
     }, err => {
-      this.shared.hideLoading();
-      console.error('ERROR', err)
-      this.shared.ShowToast(err);
+      this.errorlog(err.json(), err);
     });
   }
 
-  private remove() {
+  remove() {
     let alert = this.alertCtrl.create({
       title: 'Eliminar cita',
       message: '¿Desea realmente eliminar esta cita?',
@@ -262,19 +258,17 @@ export class CreateAppointmentComponent implements OnInit {
     alert.present();
   }
 
-  private removeAppointment() {
+  removeAppointment() {
     this.shared.showLoading(this.translateService.instant('loading'));
     let request = { "appointment_id": this.appointmentModel.appointmentId };
     this.api.authpost(this.api.deleteAppointment, request, false).map(res => res.json()).subscribe(res => {
       this.shared.hideLoading();
       if (res.status == 200) {
         this.shared.showAlert('Cita eliminada correctamente');
-        this.view.dismiss("remove");
+        this.redirectToBack("remove");
       }
     }, err => {
-      this.shared.hideLoading();
-      console.error('ERROR', err)
-      this.shared.ShowToast(err);
+      this.errorlog(err.json(), err);
     });
   }
 
@@ -301,9 +295,24 @@ export class CreateAppointmentComponent implements OnInit {
     let motivo = { id: "1", value: "Consulta" };
     this.list_motivo.push(motivo);
 
+    this.api.authget(this.api.getEstablishmentReasons).map(res => res.json()).subscribe(res => {
+      console.log(res)
+    //   this.lista_patients = [];
+    //   res.patients.forEach((data) => {
+    //     let patientObj = {
+    //       name: data.first_name + " " + data.last_name,
+    //       id: data.id
+    //     }
+    //     this.lista_patients.push(patientObj);
+    //   });
+    // }, err => {
+    //   this.shared.ShowToast(this.translateService.instant('Failedloading'));
+    //   console.error('ERROR', err)
+    });
+
   }
 
-  private gotoSearch1() {
+    gotoSearch1() {
     let addModal = this.modalCtrl.create(Searchbar3Page, { 'patientList': this.lista_patients });
     addModal.onDidDismiss(item => {
       if (item && item.name) {
@@ -316,4 +325,23 @@ export class CreateAppointmentComponent implements OnInit {
     })
     addModal.present();
   }
+
+  private errorlog(error, seriveerror) {
+    try {
+      this.shared.hideLoading();
+      if (error.status_code) {
+        this.shared.ShowToast(error.detail);
+      } else {
+        this.shared.ShowToast(seriveerror);
+      }
+    }
+    catch (e) {
+      this.shared.ShowToast("Service Error!");
+    }
+  }
+
+  ionViewWillLeave() {
+    this.shared.setCurrentPage("tab1");
+  }
+
 }

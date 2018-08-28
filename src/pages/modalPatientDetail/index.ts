@@ -1,0 +1,1 @@
+export { ModalPatientDetailPage } from './modalPatientDetail';

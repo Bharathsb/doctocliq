@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { DoctorthanksPage } from '../doctorthanks/doctorthanks';
-import { Validators, FormBuilder, FormGroup } from '@angular/forms';
+import { Validators, FormBuilder } from '@angular/forms';
 import { Shared } from '../../providers/shared';
 import { Api } from '../../providers/api/api';
 import { TranslateService } from '@ngx-translate/core';

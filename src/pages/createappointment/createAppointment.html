@@ -16,15 +16,13 @@
 </ion-header>
 <ion-content padding *ngIf="this.type !== 'Update'">
   <ion-row margin-top>
-    <ion-item no-lines (click)="gotoSearch1();">
-      <ion-label>
-        <ion-icon name="contact" margin-right></ion-icon>
-        {{(patientName && patientName.length)?patientName:('Patient' | translate)}}
-      </ion-label>
+    <ion-item (click)="gotoSearch1();">
+          <p class="rowdata">{{ 'Patient' | translate }}</p>
+          <ion-searchbar [(ngModel)]="patientName" placeholder="{{ 'Choose' | translate }} {{ 'patient' | translate }}"></ion-searchbar>
     </ion-item>
   </ion-row>
   <form [formGroup]="appointmentForm">
-    <ion-row margin-top>
+    <ion-row >
       <ion-item>
         <ion-label floating>{{ 'Speciality' | translate }}</ion-label>
         <ion-select formControlName="especialidade" (ionChange)="onSelectedSpeciality($event)">
@@ -100,43 +98,43 @@
 
 <ion-content padding *ngIf="this.type === 'Update'">
   <ion-row margin-top>
-    <ion-col col-6>
+    <ion-col col-4>
       <p class="rowdata">{{ 'Patient' | translate }}</p>
     </ion-col>
-    <ion-col col-6>
+    <ion-col col-8>
       <p text-right>{{appointmentModel.patientName}}</p>
     </ion-col>
   </ion-row>
   <ion-row margin-top>
-    <ion-col col-6>
+    <ion-col col-4>
       <p class="rowdata">{{ 'Speciality' | translate }}</p>
     </ion-col>
-    <ion-col col-6>
+    <ion-col col-8>
       <p text-right>{{appointmentModel.especialidade}}</p>
     </ion-col>
   </ion-row>
   <ion-row margin-top>
-    <ion-col col-6>
+    <ion-col col-4>
       <p class="rowdata">{{ 'Doctor' | translate }}</p>
     </ion-col>
-    <ion-col col-6>
+    <ion-col col-8>
       <p text-right>{{appointmentModel.doctorName}}</p>
     </ion-col>
   </ion-row>
   <ion-row margin-top>
-    <ion-col col-6>
+    <ion-col col-4>
       <p class="rowdata">{{ 'Date' | translate }}</p>
     </ion-col>
-    <ion-col col-6>
+    <ion-col col-8>
       <p text-right>{{appointmentModel.datePicker}}</p>
     </ion-col>
   </ion-row>
 
   <ion-row margin-top>
-    <ion-col col-6>
+    <ion-col col-4>
       <p class="rowdata">{{ 'Hour' | translate }}</p>
     </ion-col>
-    <ion-col col-6>
+    <ion-col col-8>
       <p text-right>{{appointmentModel.horario}}</p>
     </ion-col>
   </ion-row>
@@ -156,10 +154,10 @@
     </ion-item>
   </ion-row>
   <ion-row margin-top>
-    <ion-col col-6>
+    <ion-col col-4>
         <p  class="rowdata">{{ 'Comment of the patient' | translate }}</p>
       </ion-col>
-      <ion-col col-6>
+      <ion-col col-8>
         <p text-right>{{appointmentModel.comment_patient}}</p>
       </ion-col>
   </ion-row>

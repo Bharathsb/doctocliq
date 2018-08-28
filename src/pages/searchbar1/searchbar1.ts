@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams,ViewController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, ViewController } from 'ionic-angular';
 import { Shared } from '../../providers/shared';
 
 /**
@@ -16,16 +16,22 @@ import { Shared } from '../../providers/shared';
 export class Searchbar1Page {
   term: string = '';
   selectitem
-  constructor(public navCtrl: NavController, public navParams: NavParams, private view: ViewController ,  public shared: Shared) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, private view: ViewController, public shared: Shared) {
   }
- 
- searchFn(ev: any) {
+
+  searchFn(ev: any) {
     this.term = ev.target.value;
   }
-  choose(item){
-  	this.view.dismiss(item);
+  choose(item) {
+    this.view.dismiss(item);
   }
-  closeModal(){
-  	this.view.dismiss();
+  closeModal() {
+    this.view.dismiss();
+  }
+  ionViewDidEnter() {
+    this.shared.setCurrentPage("Searchbar1Page");
+  }
+  ionViewWillLeave() {
+    this.shared.setCurrentPage("landingpage");
   }
 }

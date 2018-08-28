@@ -36,7 +36,7 @@ districtname
 
   gotoStep4(){
    
-      var data={time:this.navParams.get('time'),date:this.navParams.get('date'),item:this.item,reason:this.navParams.get('reason'),districtsdoctor:this.navParams.get('districtsdoctor'),comment:this.comment}
+      // var data={time:this.navParams.get('time'),date:this.navParams.get('date'),item:this.item,reason:this.navParams.get('reason'),districtsdoctor:this.navParams.get('districtsdoctor'),comment:this.comment}
       var schedule=this.navParams.get('schedule')
       schedule.time_start=moment(this.navParams.get('date')+" "+schedule.time_start).format('YYYY-MM-DD hh:mm:ss')
       schedule.time_end=moment(this.navParams.get('date')+" "+schedule.time_end).format('YYYY-MM-DD hh:mm:ss')

@@ -1,4 +1,12 @@
-page-login {
-	
+.login-checkbox{
+    color: #999;
 }
-
+.login-checkbox ion-item{
+    padding-left: 10px;
+}
+.login-checkbox .item.item-md .checkbox-md{
+    margin-right: 14px;
+}
+.login-checkbox .item-md.item-block .item-inner{
+    border: none;
+}

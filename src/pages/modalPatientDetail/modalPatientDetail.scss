@@ -1,0 +1,30 @@
+.patient-header .toolbar-background-md{
+    background: #004D99;
+}
+.patient-header button, .patient-header .toolbar-title {
+    color: #fff;
+}
+
+.rowdata{
+    margin-left: 10px;
+    color: #999;
+}
+
+.patient-img{
+    width: 150px;
+    height: 150px;
+    text-align: center;
+    margin: 50px auto 0;
+    overflow: hidden;
+    border-radius: 50%;
+}
+.patient-img img{
+    width: 100%;
+    height: auto;
+    display: inline-block;
+}
+
+.grid-row{
+    padding: 10px;
+    border-bottom: 1px solid #dcd8d8;
+  }

@@ -5,7 +5,7 @@ import { Tabclinic2Page } from '../tabclinic2/tabclinic2';
 import { Tabclinic3Page } from '../tabclinic3/tabclinic3';
 
 @Component({
-  templateUrl: 'tabsclinic.html'
+  templateUrl: 'tabsclinic.html',
 })
 export class TabsclinicPage {
 
@@ -16,4 +16,5 @@ export class TabsclinicPage {
   constructor() {
 
   }
+
 }

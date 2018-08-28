@@ -5,20 +5,22 @@
 		<ion-title>
 			<ion-row>
 				<ion-col col-4>
-					<button ion-button>
+					<!-- <button ion-button>
 						<ion-icon name="ios-arrow-back"></ion-icon> {{'Back' | translate}}
-					</button>
+					</button> -->
 				</ion-col>
 				<ion-col col-4 text-center>
-					<ion-label>{{'Agenda' | translate}}</ion-label>
+					<!-- <ion-label>{{'Agenda' | translate}}</ion-label> -->
+					<span *ngIf="!isListView">{{ _startdayOfWeek }} - {{ _enddayOfWeek }}</span>
+					<span *ngIf="isListView">{{listViewDate}}</span>
 				</ion-col>
 				<ion-col col-4 text-right>
-						<button ion-button class="filter-icon" *ngIf="!isListView" (click)="filterDoctors($event)">
-							<ion-icon name="ios-funnel-outline"></ion-icon>
-						</button>
-						<button ion-button class="menu-icon" (click)="openMenu($event)">
-							<ion-icon name="menu"></ion-icon>
-						</button>
+					<button ion-button class="filter-icon" (click)="filterDoctors($event)">
+						<ion-icon name="ios-funnel-outline"></ion-icon>
+					</button>
+					<button ion-button class="menu-icon" (click)="openMenu($event)">
+						<ion-icon name="menu"></ion-icon>
+					</button>
 				</ion-col>
 			</ion-row>
 		</ion-title>
@@ -30,10 +32,10 @@
 		<ion-col col-12 col-md-12>
 			<ion-row>
 				<ion-col col-4 no-padding>
-					<ion-label class="label-startendday">
+					<!-- <ion-label class="label-startendday">
 						<span *ngIf="!isListView">{{ _startdayOfWeek }} - {{ _enddayOfWeek }}</span>
 						<span *ngIf="isListView">{{listViewDate}}</span>
-					</ion-label>
+					</ion-label> -->
 				</ion-col>
 				<ion-col col-4 no-padding>
 					<ion-row *ngIf="!isListView">
@@ -72,28 +74,15 @@
 					<ion-toggle class='pull-right' toggle-class="toggle-assertive" [(ngModel)]="isListView" (ionChange)="loadListData()">
 					</ion-toggle>
 				</ion-col>
-				<!-- <ion-col col-12 no-padding class='pull-right'>
-					<div *ngIf="!isListView">
-						<button *ngIf="doctorName === undefined" ion-button class='pull-right' (click)="filterDoctors($event)">
-							<ion-icon name="ios-funnel-outline"></ion-icon>
-						</button>
-						<button *ngIf="doctorName !== undefined" ion-button class='pull-right' (click)="removeFilterDoctors($event)">
-							Clear Filter
-						</button>
-						<ion-badge style='margin-top: 20px;' *ngIf="doctorName !== undefined" item-end>{{doctorName}}</ion-badge>
-					</div>
-				</ion-col> -->
-
 			</ion-row>
-
 		</ion-col>
 	</ion-row>
 
 	<div *ngIf="!isListView">
 
-		<iq-calendar-week-hours-view [viewDate]="viewDate" [events]="events" [excludeDays]="excludeDays" [hourSegments]="2" [dayStartHour]="9"
-		 [dayEndHour]="21" (eventClicked)="handleEvent($event.event)" (eventTimesChanged)="eventTimesChanged($event)"
-		 [weekStartsOn]="1" [refresh]="refresh" [locale]="locale">
+		<iq-calendar-week-hours-view [viewDate]="viewDate" [events]="events" [excludeDays]="excludeDays" [hourSegments]="2" [dayStartHour]="7"
+		 [dayEndHour]="21" (eventClicked)="handleEvent($event.event)" (hourSegmentClicked)="hourSegmentClicked($event)" [weekStartsOn]="1"
+		 [refresh]="refresh" [locale]="locale">
 		</iq-calendar-week-hours-view>
 
 	</div>
@@ -104,15 +93,21 @@
 					<b>Cita</b>
 				</ion-col>
 				<ion-col>
+					<b>Doctor</b>
+				</ion-col>
+				<ion-col>
 					<b>Paciente</b>
 				</ion-col>
 				<ion-col>
 					<b>razón</b>
 				</ion-col>
 			</ion-row>
-			<ion-row class="grid-row" *ngFor="let data of listevents">
+			<ion-row class="grid-row" *ngFor="let data of listevents | paginate: { itemsPerPage: 5, currentPage: p }" (click)="loadAppointment(data.id)">
 				<ion-col>
 					{{data.time}}
+				</ion-col>
+				<ion-col>
+					{{data.doctor}}
 				</ion-col>
 				<ion-col>
 					{{data.patientName}}
@@ -121,6 +116,7 @@
 					{{data.reason}}
 				</ion-col>
 			</ion-row>
+			<pagination-controls (pageChange)="p = $event"></pagination-controls>
 		</ion-grid>
 	</div>
 

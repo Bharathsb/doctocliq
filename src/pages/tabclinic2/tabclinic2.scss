@@ -2,3 +2,31 @@ page-tabclinic2 {
 
 
 }
+.patient-list{
+
+}
+.patient-icon-div{
+    position: absolute;
+    right: 10px;
+    text-align: center;
+    bottom: 5px;
+    width: 90px;
+    height: 60px;
+}
+.patient-icon-div button{
+    width: 28px;
+    height: 28px;
+    display: inline-block;
+    
+}
+.tel-icon{
+    background: #26E99A;
+    border-radius: 5px;
+    padding: 5px;
+}
+.whatsapp-icon{
+    color: #00A859;
+    font-size: 27px;
+    background: none;
+    vertical-align: -6px;
+}

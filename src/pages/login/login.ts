@@ -9,7 +9,7 @@ import { Api } from '../../providers/api/api';
 import { TranslateService } from '@ngx-translate/core';
 import { ModalforgotpasswordPage } from '../../pages/modalforgotpassword/modalforgotpassword';
 import { AppointmentStep3Page } from '../appointment-step3/appointment-step3';
-
+import { Storage } from '@ionic/storage';
 
 @IonicPage()
 @Component({
@@ -21,10 +21,11 @@ export class LoginPage implements OnInit {
 
   constructor(public navCtrl: NavController, public navParams: NavParams, private modal: ModalController,
     public translateService: TranslateService
-    , public api: Api, public shared: Shared, formBuilder: FormBuilder, ) {
-      this.registerForm = formBuilder.group({
+    , public api: Api, public shared: Shared, formBuilder: FormBuilder, private storage: Storage) {
+    this.registerForm = formBuilder.group({
       password: ['', Validators.compose([Validators.required, Validators.minLength(6)])],
       phone: ['', Validators.compose([Validators.required, Validators.minLength(9), Validators.maxLength(9)])],
+      rememberme: [false]
     });
   }
 
@@ -123,9 +124,9 @@ export class LoginPage implements OnInit {
 
   login() {
     if (this.validate()) {
-      this.shared.showLoading(this.translateService.instant('loading'))
+      this.shared.showLoading(this.translateService.instant('loading'));
       let body = { "username": this.registerForm.value.phone, "password": this.registerForm.value.password };
-      let seq = this.api.authpost(this.api.loginUrl, body,true)
+      let seq = this.api.authpost(this.api.loginUrl, body, true)
       seq.map(res => res.json()).subscribe(res => {
         this.shared.hideLoading()
         if (res.patient) {
@@ -138,23 +139,34 @@ export class LoginPage implements OnInit {
             this.navCtrl.push(AppointmentStep3Page, data);
           } else this.navCtrl.push(TabspatientPage);
         } else if (res.doctor) {
-          this.shared.loggedIn(res.doctor, 'login')
+          this.shared.loggedIn(res.doctor, 'login');
           this.navCtrl.push(TabsdoctorPage);
         }
         else if (res.key) {
           this.shared.loggedIn(res.key, 'login')
-          this.navCtrl.push(TabsclinicPage);
+          this.navCtrl.setRoot(TabsclinicPage);
         } else {
           this.shared.ShowToast(this.translateService.instant('errorlogin'));
+        }
+        if (this.registerForm.value.rememberme) {
+          this.storage.set('rememberme', true);
+          this.storage.set('userdata', this.registerForm.value.phone + "~" + this.registerForm.value.password);
+        } else {
+          this.storage.clear();
         }
 
       }, err => {
         console.error('ERROR', err)
-        this.shared.hideLoading()
-        this.shared.ShowToast(err);
+        this.shared.hideLoading();
+        if (err.status === 403) {
+          this.shared.ShowToast("CSRF Failed:  Forbidden Issue");
+        } else if (err.status === 400) {
+          this.shared.ShowToast("Please check your username or password");
+        } else {
+          this.shared.ShowToast(err);
+        }
       });
-    } 
-     // this.navCtrl.push(TabsclinicPage);
+    }
   }
 
   openForgotpasswordModal() {
@@ -163,21 +175,37 @@ export class LoginPage implements OnInit {
       showBackdrop: true,
       enableBackdropDismiss: false
     };
-
-    // const myModalData = {
-
-    // };
-
     const myModal: Modal = this.modal.create(ModalforgotpasswordPage, myModalOptions);
-
     myModal.present();
   }
 
-  ngOnInit(){
+  ngOnInit() {
     this.shared.clearStroage();
-    this.api.clearSession().map(res => res).subscribe(res => {
+    this.shared.showLoading(this.translateService.instant('loading'));
+    this.api.clearSession().map(res => res).subscribe(sessionClear => {
+      this.shared.hideLoading();
+      this.storage.get('rememberme').then((val) => {
+        if (val) {
+          this.storage.get('userdata').then((data) => {
+            let dataSplit = data.split("~");
+            this.registerForm.patchValue({
+              "phone": dataSplit[0],
+              "password": dataSplit[1],
+              "rememberme": true
+            });
+            // this.login();
+          });
+        }
+      });
     }, err => {
-      this.shared.ShowToast(err);
-    }); 
+      this.shared.hideLoading();
+    });
+  }
+
+  ionViewCanEnter() {
+    let token = localStorage.getItem("key");
+    if ((token !== undefined) && (token !== null)) {
+      this.navCtrl.setRoot(TabsclinicPage);
+    }
   }
 }

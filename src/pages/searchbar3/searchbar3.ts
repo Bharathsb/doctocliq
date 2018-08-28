@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, ViewController } from 'ionic-angular';
+import { Shared } from '../../providers/shared';
 
 /**
  * Generated class for the Searchbar3Page page.
@@ -16,7 +17,7 @@ export class Searchbar3Page {
   term: string = '';
   selectitem: any;
   patientList: any;
-  constructor(public navCtrl: NavController, public navParams: NavParams, private view: ViewController) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, private view: ViewController, public shared: Shared) {
     this.patientList = this.navParams.get("patientList")
     if (this.patientList === undefined) {
       this.patientList = [];
@@ -31,5 +32,12 @@ export class Searchbar3Page {
   }
   closeModal() {
     this.view.dismiss();
+  }
+
+  ionViewDidEnter() {
+    this.shared.setCurrentPage("Searchbar3Page");
+  }
+  ionViewWillLeave() {
+    this.shared.setCurrentPage("createAppointment");
   }
 }

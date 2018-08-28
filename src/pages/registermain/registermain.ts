@@ -2,10 +2,6 @@ import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { RegisterdoctorPage } from '../registerdoctor/registerdoctor';
 import { RegisterpatientPage } from '../registerpatient/registerpatient';
-import { PatientsmsPage } from '../patientsms/patientsms';
-import { DoctorsmsPage } from '../doctorsms/doctorsms';
-
-
 
 /**
  * Generated class for the RegistermainPage page.

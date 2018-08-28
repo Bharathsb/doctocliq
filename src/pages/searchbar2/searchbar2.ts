@@ -27,4 +27,10 @@ export class Searchbar2Page {
   closeModal(){
   	this.view.dismiss();
   }
+  ionViewDidEnter() {
+    this.shared.setCurrentPage("Searchbar2Page");
+  }
+  ionViewWillLeave() {
+    this.shared.setCurrentPage("landingpage");
+  }
 }

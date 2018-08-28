@@ -1,10 +1,5 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavParams, ViewController, NavController } from 'ionic-angular';
-import { TranslateService } from '@ngx-translate/core';
-import { Shared } from '../../providers/shared';
-import { CreateAppointmentComponent } from '../../pages/createappointment';
-import { CreatePatientComponent } from '../../pages/createpatient';
-
 /**
  * Generated class for the ModalfiltersPage page.
  *
@@ -33,15 +28,10 @@ export class PopOverPage {
   }
   
   open(id: any) {
-    if( id === 1 ){
-      this.viewCtrl.dismiss("1");
-    }else {
-      this.close();
-      this.navCtrl.push(CreatePatientComponent);
-    }
+    this.viewCtrl.dismiss(id.toString());
   }
 
-  private selectedDoctor(doctor,type) {
+  selectedDoctor(doctor,type) {
     if(type === 'load'){
       doctor['type'] = type;
     } else if(type === 'loadAll') {

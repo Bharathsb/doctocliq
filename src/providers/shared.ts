@@ -73,7 +73,8 @@ export class Shared {
         this.storage.set('userdata', JSON.stringify(this.user));
         if (type == 'register') this.storage.set('validationsms', false);
         else this.storage.set('validationsms', true);
-        sessionStorage.setItem("key", this.user)
+        localStorage.setItem("key", this.user);
+        localStorage.setItem("logindate", new Date().toString());
     }
     //show loading pop up 
     showLoading(txt) {
@@ -99,6 +100,7 @@ export class Shared {
     clearStroage() {
         sessionStorage.clear();
         localStorage.clear();
+        this.storage.clear();
         this.removeCookies();
     }
 
@@ -111,4 +113,22 @@ export class Shared {
             document.cookie = name + "=;expires=Thu, 01 Jan 1970 00:00:00 GMT";
         }
     }
+    setCurrentPage(pageName) {
+        // this.storage.set('currentPage', pageName);
+        localStorage.setItem('currentPage', pageName);
+    }
+
+    getCurrentPage(): any {
+        /*let page = undefined;
+        this.storage.get('currentPage').then((val) => {
+            if (val) {
+                return val;
+            } else {
+                return page;
+            }
+        });
+        return page; */
+        return localStorage.getItem('currentPage');
+    }
+
 }

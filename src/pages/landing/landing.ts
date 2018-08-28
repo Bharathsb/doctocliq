@@ -29,9 +29,9 @@ export class LandingPage {
     public translateService: TranslateService, public modalCtrl: ModalController) {
       if(this.shared.specialitylist.length==0)this.shared.loadspecialities()
       if(this.shared.districtlist.length==0)this.shared.loaddistricts()
-        console.log(moment( ).add(3,'days').format("YYYY-MM-DD"))
-       
-  }
+      console.log(moment( ).add(3,'days').format("YYYY-MM-DD"))
+        
+    }
 
   gotoLogin(){
   	this.navCtrl.push(LoginPage);
@@ -68,7 +68,10 @@ export class LandingPage {
       this.navCtrl.push(DoctorlistPage,{speciality:this.speciality,district:this.districtselect.id,districtname:this.districtselect.name}
       );
     }
-  }                   
-   
+  } 
+
+  ionViewDidEnter() {
+    this.shared.setCurrentPage("landingpage");
+  }
 }
 

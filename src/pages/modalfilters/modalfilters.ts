@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavParams, ViewController,ModalController } from 'ionic-angular';
+import { IonicPage, ViewController,ModalController } from 'ionic-angular';
 import { TranslateService } from '@ngx-translate/core';
 import { Searchbar1Page } from '../searchbar1/searchbar1';
 import { Searchbar2Page } from '../searchbar2/searchbar2';
@@ -21,7 +21,7 @@ export class ModalfiltersPage {
   districtselect
   speciality=''
   district=''
-  constructor(private navParams: NavParams, private view: ViewController,  public shared: Shared,
+  constructor(private view: ViewController,  public shared: Shared,
     public translateService: TranslateService, public modalCtrl: ModalController) {
   }
 

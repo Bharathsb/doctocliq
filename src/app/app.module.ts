@@ -1,7 +1,6 @@
-import { NgModule, ErrorHandler, Component } from '@angular/core';
+import { NgModule, ErrorHandler } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { IonicApp, IonicModule, IonicErrorHandler } from 'ionic-angular';
-import { FormsModule } from '@angular/forms';
 import { MyApp } from './app.component';
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
@@ -28,12 +27,9 @@ import { Tabdoctor2Page } from '../pages/tabdoctor2/tabdoctor2';
 import { Tabdoctor3Page } from '../pages/tabdoctor3/tabdoctor3';
 import { Tabdoctor1Page } from '../pages/tabdoctor1/tabdoctor1';
 
-import { TabsclinicPage } from '../pages/tabsclinic/tabsclinic';
 
-import { Tabclinic1Page } from '../pages/tabclinic1/tabclinic1';
-import { Tabclinic2Page } from '../pages/tabclinic2/tabclinic2';
-import { Tabclinic3Page } from '../pages/tabclinic3/tabclinic3';
 
+import { Tabclinic1PageModule } from '../pages/tabclinic1/tabclinic1.module';
 import { ModalforgotpasswordPage } from '../pages/modalforgotpassword/modalforgotpassword';
 import { ModalseecommentsPage } from '../pages/modalseecomments/modalseecomments';
 import { AppointmentStep1Page } from '../pages/appointment-step1/appointment-step1';
@@ -54,7 +50,6 @@ import { PatientsmsPage } from '../pages/patientsms/patientsms';
 
 import { Searchbar1Page } from '../pages/searchbar1/searchbar1';
 import { Searchbar2Page } from '../pages/searchbar2/searchbar2';
-import { Searchbar3Page } from '../pages/searchbar3/searchbar3';
 
 import { AppointmentStep2Page } from '../pages/appointment-step2/appointment-step2';
 import { AppointmentStep3Page } from '../pages/appointment-step3/appointment-step3';
@@ -69,18 +64,13 @@ import { ArrayFilterPipe } from '../pipes/array-filter.pipe';
 
 
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { CustomEventTitleFormatterProvider } from '../providers/custom-event-title-formatter/custom-event-title-formatter';
-import { CustomDateFormatterProvider } from '../providers/custom-date-formatter/custom-date-formatter';
-
-import { CalendarModule, CalendarDateFormatter, CalendarEventTitleFormatter, CalendarWeekViewComponent } from 'angular-calendar';
-import { CalendarWeekHoursViewModule } from 'angular-calendar-week-hours-view';
 
 import localeEs from '@angular/common/locales/es';
 import { registerLocaleData } from '@angular/common';
-import { PopOverPage } from '../pages/popoverMenuItem';
-import { CreateAppointmentComponent } from '../pages/createappointment';
-import { CreatePatientComponent } from '../pages/createpatient';
 
+import { AndroidPermissions } from '@ionic-native/android-permissions';
+import { Tabclinic2Page } from '../pages/tabclinic2/tabclinic2';
+import { Searchbar3Page } from '../pages/searchbar3/searchbar3';
 registerLocaleData(localeEs);
 
 // import { InputsModule } from '@progress/kendo-angular-inputs';
@@ -100,17 +90,13 @@ registerLocaleData(localeEs);
 
     Tabpatient3Page,
     Tabpatient2Page,
-    Tabpatient1Page,LegaltermsPage,MapPage,ModalfiltersPage,ModalseephonesPage,ModalseepricesPage,
+    Tabpatient1Page, LegaltermsPage, MapPage, ModalfiltersPage, ModalseephonesPage, ModalseepricesPage,
     TabspatientPage,
     Tabdoctor3Page,
     Tabdoctor2Page,
     Tabdoctor1Page,
     TabsdoctorPage,
-    Tabclinic1Page,
-    Tabclinic2Page,
-    Tabclinic3Page,
-    TabsclinicPage,
-    ModalforgotpasswordPage,ModalseecommentsPage,AppointmentStep1Page,
+    ModalforgotpasswordPage, ModalseecommentsPage, AppointmentStep1Page,
     Searchbar1Page,
     Searchbar2Page,
     RegisterdoctorPage,
@@ -123,18 +109,16 @@ registerLocaleData(localeEs);
     AppointmentStep2Page,
     AppointmentStep3Page,
     AppointmentStep4Page,
-    Search,ArrayFilterPipe,
-    PopOverPage,
-    CreateAppointmentComponent,
-    CreatePatientComponent,
+    Search, ArrayFilterPipe,
+    Tabclinic2Page,
     Searchbar3Page
   ],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
-    HttpModule, 
-     IonicStorageModule.forRoot(),
-     TranslateModule.forRoot({
+    HttpModule,
+    IonicStorageModule.forRoot(),
+    TranslateModule.forRoot({
       loader: {
         provide: TranslateLoader,
         useFactory: HttpLoaderFactory,
@@ -143,28 +127,23 @@ registerLocaleData(localeEs);
     }),
     HttpClientModule,
     IonicModule.forRoot(MyApp),
-    CalendarModule.forRoot(),
-    CalendarWeekHoursViewModule
+    Tabclinic1PageModule
     // InputsModule
   ],
   bootstrap: [IonicApp],
   entryComponents: [
     MyApp,
     LandingPage,
-    
+
     Tabpatient3Page,
     Tabpatient2Page,
-    Tabpatient1Page,LegaltermsPage,MapPage,ModalfiltersPage,ModalseephonesPage,ModalseepricesPage,
+    Tabpatient1Page, LegaltermsPage, MapPage, ModalfiltersPage, ModalseephonesPage, ModalseepricesPage,
     TabspatientPage,
     Tabdoctor3Page,
     Tabdoctor2Page,
     Tabdoctor1Page,
     TabsdoctorPage,
-    Tabclinic1Page,
-    Tabclinic2Page,
-    Tabclinic3Page,
-    TabsclinicPage,
-    ModalforgotpasswordPage,ModalseecommentsPage,AppointmentStep1Page,
+    ModalforgotpasswordPage, ModalseecommentsPage, AppointmentStep1Page,
     LoginPage,
     RegistermainPage,
     Searchbar1Page,
@@ -179,30 +158,30 @@ registerLocaleData(localeEs);
     AppointmentStep2Page,
     AppointmentStep3Page,
     AppointmentStep4Page,
-    PopOverPage,
-    CreateAppointmentComponent,
-    CreatePatientComponent,
+    Tabclinic2Page,
     Searchbar3Page
   ],
   providers: [
     StatusBar,
     SplashScreen,
-    {provide: ErrorHandler, useClass: IonicErrorHandler},
+    { provide: ErrorHandler, useClass: IonicErrorHandler },
     Api,
     Shared,
-    CustomEventTitleFormatterProvider,
-    CustomDateFormatterProvider,
-    {
-      provide: CalendarDateFormatter,
-      useClass: CustomDateFormatterProvider
-    },
-    {
-      provide: CalendarEventTitleFormatter,
-      useClass: CustomEventTitleFormatterProvider
-    }
+    // CustomEventTitleFormatterProvider,
+    // CustomDateFormatterProvider,
+    // {
+    //   provide: CalendarDateFormatter,
+    //   useClass: CustomDateFormatterProvider
+    // },
+    // {
+    //   provide: CalendarEventTitleFormatter,
+    //   useClass: CustomEventTitleFormatterProvider
+    // },
+    AndroidPermissions
+
   ]
 })
-export class AppModule {}
+export class AppModule { }
 
 // The translate loader needs to know where to load i18n files
 // in Ionic's static asset pipeline.

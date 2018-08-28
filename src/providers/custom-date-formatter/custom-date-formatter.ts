@@ -1,8 +1,7 @@
-import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { CalendarDateFormatter, DateFormatterParams } from 'angular-calendar';
 import { DatePipe } from '@angular/common';
-import { getISOWeek, subDays, addDays } from 'date-fns';
+import { getISOWeek } from 'date-fns';
  
 /*
   Generated class for the CustomDateFormatterProvider provider.
