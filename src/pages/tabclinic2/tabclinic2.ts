@@ -53,7 +53,7 @@ export class Tabclinic2Page {
           age = data.age;
         }
         let patientObj = {
-          imageProfile: (data.sex === 'F') ? '/static/patient/female.png' : '/static/patient/male.png',
+          imageProfile: (data.sex === 'F') ? 'static/patient/female.png' : 'static/patient/male.png',
           name: data.first_name + " " + data.last_name,
           id: data.id,
           age: age,

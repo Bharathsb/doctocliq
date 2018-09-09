@@ -17,12 +17,12 @@
 <ion-content padding *ngIf="this.type !== 'Update'">
   <ion-row margin-top>
     <ion-item (click)="gotoSearch1();">
-          <p class="rowdata">{{ 'Patient' | translate }}</p>
-          <ion-searchbar [(ngModel)]="patientName" placeholder="{{ 'Choose' | translate }} {{ 'patient' | translate }}"></ion-searchbar>
+      <p class="rowdata">{{ 'Patient' | translate }}</p>
+      <ion-searchbar [(ngModel)]="patientName" placeholder="{{ 'Choose patient' | translate }}"></ion-searchbar>
     </ion-item>
   </ion-row>
-  <form [formGroup]="appointmentForm">
-    <ion-row >
+  <form [formGroup]="appointmentForm" *ngIf="appointmentForm">
+    <ion-row>
       <ion-item>
         <ion-label floating>{{ 'Speciality' | translate }}</ion-label>
         <ion-select formControlName="especialidade" (ionChange)="onSelectedSpeciality($event)">
@@ -30,23 +30,23 @@
         </ion-select>
       </ion-item>
     </ion-row>
-    <ion-row margin-top>
+    <ion-row>
       <ion-item>
         <ion-label floating>{{ 'Doctor' | translate }}</ion-label>
-        <ion-select formControlName="doctore">
+        <ion-select formControlName="doctore" (ionChange)="selectedDoctor($event)">
           <ion-option *ngFor="let doctorObj of lista_doctores" [value]="doctorObj.id">{{doctorObj.name}}</ion-option>
         </ion-select>
       </ion-item>
     </ion-row>
 
-    <ion-row margin-top>
+    <ion-row>
       <ion-item>
         <ion-label floating>{{ 'Date' | translate }}</ion-label>
         <ion-datetime displayFormat="DD/MM/YYYY" formControlName="datePicker"></ion-datetime>
       </ion-item>
     </ion-row>
 
-    <ion-row margin-top>
+    <ion-row>
       <ion-item>
         <ion-label floating>{{ 'Hour' | translate }}</ion-label>
         <ion-select formControlName="horario">
@@ -55,7 +55,7 @@
       </ion-item>
     </ion-row>
 
-    <ion-row margin-top>
+    <ion-row>
       <ion-item>
         <ion-label floating>{{'Duration' | translate}}</ion-label>
         <ion-select formControlName="duracione">
@@ -64,16 +64,16 @@
       </ion-item>
     </ion-row>
 
-    <ion-row margin-top>
+    <ion-row>
       <ion-item>
         <ion-label floating>{{'Reason' | translate}}</ion-label>
-        <ion-select formControlName="motivo">
-          <ion-option *ngFor="let motivoObj of list_motivo" [value]="motivoObj.id">{{motivoObj.value}}</ion-option>
+        <ion-select formControlName="motivo" (ionChange)="selectedReason($event)">
+          <ion-option *ngFor="let motivoObj of list_motivo" [value]="motivoObj.id">{{motivoObj.title}}</ion-option>
         </ion-select>
       </ion-item>
     </ion-row>
 
-    <ion-row margin-top>
+    <ion-row>
       <ion-item>
         <ion-label floating>{{'Price' | translate}}</ion-label>
         <div class="input-group-addon">S/. </div>
@@ -81,7 +81,7 @@
       </ion-item>
     </ion-row>
 
-    <ion-row margin-top>
+    <ion-row>
       <ion-item>
         <ion-label floating>{{'Comment of the appointment' | translate}}</ion-label>
         <ion-textarea formControlName="comment_appointment" rows="3"></ion-textarea>
@@ -89,7 +89,7 @@
     </ion-row>
 
   </form>
-  <ion-row margin-top class="appointment-btn">
+  <ion-row class="appointment-btn">
     <button ion-button color="secondary" block margin-top (click)="creatApointment();">
       {{ 'Create appointment' | translate }}
     </button>
@@ -105,7 +105,7 @@
       <p text-right>{{appointmentModel.patientName}}</p>
     </ion-col>
   </ion-row>
-  <ion-row margin-top>
+  <ion-row>
     <ion-col col-4>
       <p class="rowdata">{{ 'Speciality' | translate }}</p>
     </ion-col>
@@ -113,7 +113,7 @@
       <p text-right>{{appointmentModel.especialidade}}</p>
     </ion-col>
   </ion-row>
-  <ion-row margin-top>
+  <ion-row>
     <ion-col col-4>
       <p class="rowdata">{{ 'Doctor' | translate }}</p>
     </ion-col>
@@ -121,7 +121,7 @@
       <p text-right>{{appointmentModel.doctorName}}</p>
     </ion-col>
   </ion-row>
-  <ion-row margin-top>
+  <ion-row>
     <ion-col col-4>
       <p class="rowdata">{{ 'Date' | translate }}</p>
     </ion-col>
@@ -130,7 +130,7 @@
     </ion-col>
   </ion-row>
 
-  <ion-row margin-top>
+  <ion-row>
     <ion-col col-4>
       <p class="rowdata">{{ 'Hour' | translate }}</p>
     </ion-col>
@@ -138,56 +138,57 @@
       <p text-right>{{appointmentModel.horario}}</p>
     </ion-col>
   </ion-row>
-  <ion-row margin-top>
-    <ion-item>
-      <ion-label floating>{{'Reason' | translate}}</ion-label>
-      <ion-select [(ngModel)]="appointmentModel.motivo">
-        <ion-option *ngFor="let motivoObj of list_motivo" [value]="motivoObj.id">{{motivoObj.value}}</ion-option>
-      </ion-select>
-    </ion-item>
-  </ion-row>
-  <ion-row margin-top>
-    <ion-item>
-      <ion-label floating>{{'Price' | translate}}</ion-label>
-      <div class="input-group-addon">S/. </div>
-      <ion-input type="number" [(ngModel)]="appointmentModel.reason_price"></ion-input>
-    </ion-item>
-  </ion-row>
-  <ion-row margin-top>
+  <ion-row>
     <ion-col col-4>
-        <p  class="rowdata">{{ 'Comment of the patient' | translate }}</p>
-      </ion-col>
-      <ion-col col-8>
-        <p text-right>{{appointmentModel.comment_patient}}</p>
-      </ion-col>
+      <p class="rowdata">{{'Reason' | translate}}</p>
+    </ion-col>
+    <ion-col col-8>
+      <ion-select [(ngModel)]="appointmentModel.motivo" class="update-dropdown-select" (ionChange)="selectedReason($event)">
+        <ion-option *ngFor="let motivoObj of list_motivo" [value]="motivoObj.id">{{motivoObj.title}}</ion-option>
+      </ion-select>
+    </ion-col>
   </ion-row>
-  <ion-row margin-top>
+  <ion-row>
+    <ion-col col-4>
+      <p class="rowdata">{{'Price' | translate}}</p>
+    </ion-col>
+    <ion-col col-8>
+      <ion-input type="number" class="update-dropdown-select" [(ngModel)]="appointmentModel.reason_price"></ion-input>
+    </ion-col>
+  </ion-row>
+  <ion-row>
+    <ion-item>
+      <ion-label floating>{{'Comment of the patient' | translate}}</ion-label>
+      <ion-textarea [(ngModel)]="appointmentModel.comment_patient" rows="3" readonly></ion-textarea>
+    </ion-item>
+  </ion-row>
+  <ion-row>
     <ion-item>
       <ion-label floating>{{'Comment of the appointment' | translate}}</ion-label>
       <ion-textarea [(ngModel)]="appointmentModel.comment_appointment" rows="3"></ion-textarea>
     </ion-item>
   </ion-row>
-  <ion-row margin-top>
+  <ion-row>
     <ion-item>
       <ion-label floating>{{'Doctors comment' | translate}}</ion-label>
       <ion-textarea [(ngModel)]="appointmentModel.comment_doctor" rows="3"></ion-textarea>
     </ion-item>
   </ion-row>
-  <ion-row margin-top>
+  <ion-row>
     <ion-item>
-      <ion-label floating>{{'Estado' | translate}}</ion-label>
+      <ion-label floating>{{'State' | translate}}</ion-label>
       <ion-select [(ngModel)]="appointmentModel.estado">
         <ion-option *ngFor="let estado of lista_estados" [value]="estado.id">{{estado.value}}</ion-option>
       </ion-select>
     </ion-item>
   </ion-row>
 
-  <ion-row margin-top class="appointment-btn">
+  <ion-row class="appointment-btn">
     <button ion-button color="secondary" block margin-top (click)="updateApointment();">
-      {{ 'Update appointment' | translate }}
+      {{ 'Update' | translate }}
     </button>
     <button ion-button color="secondary" block margin-top (click)="remove();">
-      {{ 'Remove appointment' | translate }}
+      {{ 'Remove' | translate }}
     </button>
   </ion-row>
 </ion-content>

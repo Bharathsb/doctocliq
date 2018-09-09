@@ -1,32 +1,41 @@
-<ion-header class="patient-header">
+<ion-header class="help-header">
     <ion-navbar>
-        <ion-title>{{ 'Help' | translate }}</ion-title>
+        <ion-title text-center>{{ 'Help' | translate }}</ion-title>
         <ion-buttons end>
             <button ion-button (click)="closeModal()">{{ 'Close' | translate }}</button>
         </ion-buttons>
     </ion-navbar>
 </ion-header>
-<ion-content class="landing" padding>
-    <ion-row margin-bottom>
-        <ion-col col-8>
-            <img src="assets/img/logoback2.png" />
-        </ion-col>
-    </ion-row>
-    <div class="container">
-
-        <div class="col-md-7 col-sm-12 font-raleway mt-100 mb-100" style="text-align: center;">
-            <h2 style="text-shadow: 1px 1px 3px #fff; font-size: 20px">
-                <span style="color:#004D99;">Si no puede acceder al panel de control es porque probablemente su cuenta no ha sido validada. </span>
-                <span style="color:#004D99;"> En caso de cualquier problema, contáctenos al 943 717 834 o escríbanos a contacto@doctocliq.com.</span>
-            </h2>
-
-            <h2 class="mt-20" style="text-shadow: 2px 2px 5px #fff; font-size: 20px">
-                <span style="color:#004D99;">¡Gracias!</span>
-            </h2>
-            <h2 style="text-shadow: 2px 2px 5px #fff; font-size: 20px">
-                <span style="color:#004D99;">El equipo de Doctocliq</span>
-            </h2>
-
-        </div>
+<ion-content padding text-center>
+    <div margin>
+        <img class="img-center" src="assets/img/logoback.png" />
     </div>
+    <div>
+        <h2 class="help-display-content">
+            <span>
+                <font>
+                    {{ 'msghelp' | translate }}
+                </font>
+            </span>
+            <span>
+                <font>
+                    {{ 'Whatsapplink' | translate }}
+                    <a href="https://wa.me/51943717834">whatsapp</a>
+                </font>
+            </span>
+        </h2>
+
+        <h2 class="help-display-content">
+            <span>
+                <font>Thank you!</font>
+            </span>
+        </h2>
+        <h2 class="help-display-content">
+            <span>
+                <font>The Doctocliq team</font>
+            </span>
+        </h2>
+
+    </div>
+
 </ion-content>

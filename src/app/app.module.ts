@@ -71,6 +71,8 @@ import { registerLocaleData } from '@angular/common';
 import { AndroidPermissions } from '@ionic-native/android-permissions';
 import { Tabclinic2Page } from '../pages/tabclinic2/tabclinic2';
 import { Searchbar3Page } from '../pages/searchbar3/searchbar3';
+import { AppAvailability } from '@ionic-native/app-availability';
+
 registerLocaleData(localeEs);
 
 // import { InputsModule } from '@progress/kendo-angular-inputs';
@@ -177,7 +179,8 @@ registerLocaleData(localeEs);
     //   provide: CalendarEventTitleFormatter,
     //   useClass: CustomEventTitleFormatterProvider
     // },
-    AndroidPermissions
+    AndroidPermissions,
+    AppAvailability
 
   ]
 })

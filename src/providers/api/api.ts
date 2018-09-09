@@ -14,8 +14,8 @@ export class Api {
   // url: string = '35.229.16.214/api-v1/';
   // ImageUrl: string = '35.229.16.214/';
 
-  // url: string = 'http://www.doctocliq.com/api-v1/';
-  url: string = '/api-v1/';
+  url: string = 'http://www.doctocliq.com/api-v1/';
+  // url: string = '/api-v1/';
   ImageUrl: string = 'http://www.doctocliq.com/';
 
   apipatients: string = 'patients/'
@@ -31,21 +31,22 @@ export class Api {
   apireason: string = "reasons/list_by_establishment/"
   apicreatappointments: string = "/appointments/"
   apischedule: string = "schedules/get_work_schedule_short_view/?establishment_id="
-  // sessionClearUrl: string = "http://www.doctocliq.com/salir/";
-  // loginUrl: string ='http://www.doctocliq.com/rest-auth/login/';
-  loginUrl: string ='/login/';
-  sessionClearUrl: string = "/salir/";
-  createPatient: string= "clinics/create_patient/";
-  createAppointment: string= "clinics/create_appointment/";
+  sessionClearUrl: string = "http://www.doctocliq.com/salir/";
+  loginUrl: string ='http://www.doctocliq.com/rest-auth/login/';
+  // loginUrl: string = '/login/';
+  // sessionClearUrl: string = "/salir/";
+  createPatient: string = "clinics/create_patient/";
+  createAppointment: string = "clinics/create_appointment/";
   apiDoctorList: string = "clinics/get_doctors/";
-  apiAppointments: string= "clinics/get_appointment/";
-  apiPaitentList: string= "clinics/get_patients/";
-  apiPaitentDetail: string= "clinics/get_patient/";
-  deleteAppointment: string= "clinics/remove_appointment/";
+  apiAppointments: string = "clinics/get_appointment/";
+  apiPaitentList: string = "clinics/get_patients/";
+  apiPaitentDetail: string = "clinics/get_patient/";
+  deleteAppointment: string = "clinics/remove_appointment/";
   updateAppoinmetnt: string = "clinics/update_appointment/";
-  getEstablishmentReasons: string ="clinics/get_establishments_reasons/";
+  getClinicInfo: string = "clinics/get_clinic_info";
+
   constructor(public http: Http) {
-    
+
   }
 
   get(endpoint: string, params?: any, options?: RequestOptions) {
@@ -107,23 +108,34 @@ export class Api {
       headers.append('authorization', 'Token ' + token);
       options = new RequestOptions({ headers: headers });
       url = this.url + endpoint;
-    }else{
+    } else {
       url = endpoint;
     }
     return this.http.post(url, body, options);
   }
-
-  authget(endpoint: string, options?: RequestOptions){
-      let token = localStorage.getItem("key");
-      const headers = new Headers();
-      headers.append('Content-Type', 'application/json');
-      headers.append('authorization', 'Token ' + token);
-      options = new RequestOptions({ headers: headers });
-    return this.http.get(this.url + endpoint,  options);
+  authpost1(endpoint: string, body: any, options?: RequestOptions) {
+    let url;
+    let token = localStorage.getItem("key");
+    const headers = new Headers();
+    headers.append('Accept','*/*');
+    headers.append('Content-Type', 'application/x-www-form-urlencoded; charset=utf-8');
+    headers.append('authorization', 'Token ' + token);
+    options = new RequestOptions({ headers: headers });
+    url = this.url + endpoint;
+    return this.http.post(url, body, options);
   }
 
-  clearSession(){
-   return this.http.get(this.sessionClearUrl);
+  authget(endpoint: string, options?: RequestOptions) {
+    let token = localStorage.getItem("key");
+    const headers = new Headers();
+    headers.append('Content-Type', 'application/json');
+    headers.append('authorization', 'Token ' + token);
+    options = new RequestOptions({ headers: headers });
+    return this.http.get(this.url + endpoint, options);
+  }
+
+  clearSession() {
+    return this.http.get(this.sessionClearUrl);
   }
 
 }

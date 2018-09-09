@@ -6,7 +6,7 @@
 -->
 <div *ngIf="type === 'menu'">
     <ion-row *ngFor="let menuItem of menuItems" >
-        <button ion-item (click)="open(menuItem.id)">{{menuItem.name}}</button>
+        <button ion-item (click)="open(menuItem.id)">{{menuItem.name | translate}}</button>
     </ion-row>
 </div>
 

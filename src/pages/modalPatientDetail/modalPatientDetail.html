@@ -6,7 +6,7 @@
 -->
 <ion-header class="patient-header">
     <ion-navbar>
-        <ion-title>{{ 'Datos del paciente' | translate }}</ion-title>
+        <ion-title>{{ 'PatientData' | translate}}</ion-title>
         <ion-buttons end>
             <button ion-button (click)="closeModal()">{{ 'Close' | translate }}</button>
         </ion-buttons>
@@ -18,7 +18,7 @@
     </div>
     <ion-row>
         <ion-col col-6>
-            <p class="rowdata">{{ 'Nombres' | translate }}</p>
+            <p class="rowdata">{{ 'Name' | translate }}</p>
         </ion-col>
         <ion-col col-6>
             <p>{{patientdetail.first_name}}</p>
@@ -26,7 +26,7 @@
     </ion-row>
     <ion-row>
         <ion-col col-6>
-            <p class="rowdata">{{ 'Apellidos' | translate }}</p>
+            <p class="rowdata">{{ 'Surnames' | translate }}</p>
         </ion-col>
         <ion-col col-6>
             <p>{{patientdetail.last_name}}</p>
@@ -51,7 +51,7 @@
 
     <ion-row>
         <ion-col col-6>
-            <p class="rowdata">{{ 'Teléfono' | translate }}</p>
+            <p class="rowdata">{{ 'Phone' | translate }}</p>
         </ion-col>
         <ion-col col-6>
             <p>{{patientdetail.cel_phone}}</p>
@@ -59,7 +59,7 @@
     </ion-row>
     <ion-row>
         <ion-col col-6>
-            <p class="rowdata">{{ 'Fecha de nacimiento' | translate }}</p>
+            <p class="rowdata">{{ 'Birthdate' | translate }}</p>
         </ion-col>
         <ion-col col-6>
             <p>{{patientdetail.birth_date | date: 'dd/MM/yyyy'}}</p>
@@ -75,7 +75,7 @@
     </ion-row>
     <ion-row>
         <ion-col col-6>
-            <p class="rowdata">{{ 'Sexo' | translate }}</p>
+            <p class="rowdata">{{ 'Sex' | translate }}</p>
         </ion-col>
         <ion-col col-6>
             <p>{{patientdetail.sex}}</p>
@@ -83,7 +83,7 @@
     </ion-row>
     <ion-row>
         <ion-col col-6>
-            <p class="rowdata">{{ 'Ocupación' | translate }}</p>
+            <p class="rowdata">{{ 'Occupation' | translate }}</p>
         </ion-col>
         <ion-col col-6>
             <p>{{patientdetail.occupation}}</p>
@@ -92,7 +92,7 @@
 
     <ion-row>
         <ion-col col-6>
-            <p class="rowdata">{{ 'Dirección' | translate }}</p>
+            <p class="rowdata">{{ 'Address' | translate }}</p>
         </ion-col>
         <ion-col col-6>
             <p>{{patientdetail.address}}</p>
@@ -100,7 +100,7 @@
     </ion-row>
     <ion-row>
         <ion-col col-6>
-            <p class="rowdata">{{ 'Distrito' | translate }}</p>
+            <p class="rowdata">{{ 'District' | translate }}</p>
         </ion-col>
         <ion-col col-6>
             <p>{{patientdetail?.district?.name}}</p>
@@ -108,12 +108,12 @@
     </ion-row>
     <ion-row>
         <ion-col>
-            <p class="rowdata">{{ 'Contacto en caso de emergencia' | translate }}</p>
+            <p class="rowdata">{{ 'Contact in case of emergency' | translate }}</p>
         </ion-col>
     </ion-row>
     <ion-row>
         <ion-col col-6>
-            <p class="rowdata">{{ 'Nombre' | translate }}</p>
+            <p class="rowdata">{{ 'Name' | translate }}</p>
         </ion-col>
         <ion-col col-6>
             <p>{{patientdetail.emergency_contact_name}}</p>
@@ -121,7 +121,7 @@
     </ion-row>
     <ion-row>
         <ion-col col-6>
-            <p class="rowdata">{{ 'Teléfono' | translate }}</p>
+            <p class="rowdata">{{ 'Phone' | translate }}</p>
         </ion-col>
         <ion-col col-6>
             <p>{{patientdetail.emergency_contact_phone}}</p>
@@ -129,20 +129,23 @@
     </ion-row>
     <ion-row>
         <ion-col>
-            <p class="rowdata">{{ 'Antecedentes' | translate }}</p>
+            <p class="rowdata">{{ 'Background' | translate }}</p>
         </ion-col>
     </ion-row>
     <div *ngIf="patientdetail?.history">
         <ion-grid>
             <ion-row class="grid-row">
                 <ion-col>
-                    <b>Fecha</b>
+                    <b>{{ 'Date' | translate }}</b> 
                 </ion-col>
                 <ion-col>
-                    <b>Doctor</b>
+                    <b>{{ 'Doctor' | translate }}</b>
                 </ion-col>
                 <ion-col>
-                    <b>Comentario del doctor</b>
+                    <b>{{ 'Reason' | translate }}</b>
+                </ion-col>
+                <ion-col>
+                    <b>{{ 'Doctors comment' | translate }}</b>
                 </ion-col>
             </ion-row>
             <ion-row class="grid-row" *ngFor="let data of patientdetail.history">
@@ -153,7 +156,10 @@
                     {{data.doctor.first_name}} {{data.doctor.last_name}}
                 </ion-col>
                 <ion-col>
-                    {{data.reason.title}}
+                    {{data.reason}}
+                </ion-col>
+                <ion-col>
+                    {{data.comment_doctor}}
                 </ion-col>
             </ion-row>
         </ion-grid>

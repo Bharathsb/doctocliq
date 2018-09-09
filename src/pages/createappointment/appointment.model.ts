@@ -9,7 +9,7 @@ export class AppointmentModel {
     horario: string;
     duracione: string;
     motivo: number;
-    reason_price: string;
+    reason_price: number;
     comment_appointment: string;
     comment_patient: string;
     comment_doctor: string;

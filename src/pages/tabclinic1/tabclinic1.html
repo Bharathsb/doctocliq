@@ -5,19 +5,12 @@
 		<ion-title>
 			<ion-row>
 				<ion-col col-4>
-					<!-- <button ion-button>
-						<ion-icon name="ios-arrow-back"></ion-icon> {{'Back' | translate}}
-					</button> -->
 				</ion-col>
-				<ion-col col-4 text-center>
-					<!-- <ion-label>{{'Agenda' | translate}}</ion-label> -->
-					<span *ngIf="!isListView">{{ _startdayOfWeek }} - {{ _enddayOfWeek }}</span>
+				<ion-col col-4 text-center padding-top>
+					<span *ngIf="!isListView"><span *ngIf="ViewTdyDate">{{ViewTdyDate}}</span><span *ngIf="ViewTdyDate === undefined">{{ _startdayOfWeek }} - {{ _enddayOfWeek }}</span></span>
 					<span *ngIf="isListView">{{listViewDate}}</span>
 				</ion-col>
 				<ion-col col-4 text-right>
-					<button ion-button class="filter-icon" (click)="filterDoctors($event)">
-						<ion-icon name="ios-funnel-outline"></ion-icon>
-					</button>
 					<button ion-button class="menu-icon" (click)="openMenu($event)">
 						<ion-icon name="menu"></ion-icon>
 					</button>
@@ -32,10 +25,6 @@
 		<ion-col col-12 col-md-12>
 			<ion-row>
 				<ion-col col-4 no-padding>
-					<!-- <ion-label class="label-startendday">
-						<span *ngIf="!isListView">{{ _startdayOfWeek }} - {{ _enddayOfWeek }}</span>
-						<span *ngIf="isListView">{{listViewDate}}</span>
-					</ion-label> -->
 				</ion-col>
 				<ion-col col-4 no-padding>
 					<ion-row *ngIf="!isListView">
@@ -46,7 +35,7 @@
 							</button>
 						</ion-col>
 						<ion-col col-8 no-padding>
-							<button ion-button full clear mwlCalendarToday [(viewDate)]="viewDate" (click)="today()">Today</button>
+							<button ion-button full clear mwlCalendarToday [(viewDate)]="viewDate" (click)="today()">{{'Today' | translate}}</button>
 						</ion-col>
 						<ion-col col-2 no-padding>
 							<button ion-button full clear icon-only mwlCalendarNextView [view]="view" [(viewDate)]="viewDate" (click)="increment()" [disabled]="nextBtnDisabled">
@@ -61,7 +50,7 @@
 							</button>
 						</ion-col>
 						<ion-col col-8 no-padding>
-							<button ion-button full clear mwlCalendarToday [(viewDate)]="viewDate" (click)="today()">Today</button>
+							<button ion-button full clear mwlCalendarToday [(viewDate)]="viewDate" (click)="today()">{{'Today' | translate}}</button>
 						</ion-col>
 						<ion-col col-2 no-padding>
 							<button ion-button full clear icon-only (click)="increment()">
@@ -90,19 +79,19 @@
 		<ion-grid>
 			<ion-row class="grid-row">
 				<ion-col>
-					<b>Cita</b>
+					<b>{{ 'Appointment' | translate }}</b>
 				</ion-col>
 				<ion-col>
-					<b>Doctor</b>
+					<b>{{ 'Doctor' | translate }}</b>
 				</ion-col>
 				<ion-col>
-					<b>Paciente</b>
+					<b>{{ 'Patient' | translate }}</b>
 				</ion-col>
 				<ion-col>
-					<b>razón</b>
+					<b>{{ 'Reason' | translate }}</b>
 				</ion-col>
 			</ion-row>
-			<ion-row class="grid-row" *ngFor="let data of listevents | paginate: { itemsPerPage: 5, currentPage: p }" (click)="loadAppointment(data.id)">
+			<ion-row class="grid-row" *ngFor="let data of listevents | paginate: { itemsPerPage: 10, currentPage: p }" (click)="loadAppointment(data.id)">
 				<ion-col>
 					{{data.time}}
 				</ion-col>

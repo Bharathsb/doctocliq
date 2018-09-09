@@ -1,23 +1,31 @@
-
+<ion-header>
+  <ion-navbar no-padding>
+    <ion-title>
+      <ion-row>
+        <ion-col text-center>
+          <ion-label>{{'More options' | translate}}</ion-label>
+        </ion-col>
+      </ion-row>
+    </ion-title>
+  </ion-navbar>
+</ion-header>
 <ion-content margin-top>
   <ion-card class="margin-top-50">
 
-  <ion-list>
-    <button ion-item>
-      <ion-icon name="person" item-start color="skyblue1"></ion-icon>
-     {{ 'Myprofile' | translate }}
-    </button>
+    <ion-list>
+      <button ion-item (click)="myProfile()">
+        <ion-icon name="person" item-start color="primary"></ion-icon>
+        {{ 'Myprofile' | translate }}
+      </button>
 
-    <button ion-item (click)="openHelp()">
-      <ion-icon name="medical" item-start color="skyblue1"></ion-icon>
-             {{ 'Help' | translate }}
-
-    </button>
-
-    <button ion-item (click)="logOut()">
-      <ion-icon name="log-out" item-start color="skyblue1"></ion-icon>
-       {{ 'Logout' | translate }}
-    </button>
-  </ion-list>
-</ion-card>
+      <button ion-item (click)="openHelp()">
+        <ion-icon name="medical" item-start color="primary"></ion-icon>
+        {{ 'Help' | translate }}
+      </button>
+      <button ion-item (click)="logOut()">
+        <ion-icon name="log-out" item-start color="primary"></ion-icon>
+        {{ 'Logout' | translate }}
+      </button>
+    </ion-list>
+  </ion-card>
 </ion-content>

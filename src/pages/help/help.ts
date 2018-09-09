@@ -25,4 +25,7 @@ export class HelpComponent {
         this.shared.setCurrentPage("tab3");
     }
 
+    redirectTo(url: string) {
+        window.open(url);
+      }
 }

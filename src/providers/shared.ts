@@ -100,7 +100,6 @@ export class Shared {
     clearStroage() {
         sessionStorage.clear();
         localStorage.clear();
-        this.storage.clear();
         this.removeCookies();
     }
 

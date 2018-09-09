@@ -6,7 +6,7 @@
 -->
 <ion-header class="patient-header" >
   <ion-navbar>
-    <ion-title>{{ 'Create Patient' | translate }}</ion-title>
+    <ion-title text-center>{{ 'Create Patient' | translate }}</ion-title>
     <ion-buttons end>
       <button ion-button (click)="closeModal()">{{ 'Close' | translate }}</button>
     </ion-buttons>
@@ -75,7 +75,7 @@
 
   <ion-row margin-top>
     <ion-item>
-      <ion-label floating>{{'district' | translate}}</ion-label>
+      <ion-label floating>{{'District' | translate}}</ion-label>
       <ion-select [(ngModel)]="district">
         <ion-option *ngFor="let districtObj of list_district" [value]="districtObj.id">{{districtObj.name}}</ion-option>
       </ion-select>

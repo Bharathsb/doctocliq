@@ -63,65 +63,6 @@ export class LoginPage implements OnInit {
     return false;
   }
 
-  // login() {
-  //   /******---------- */
-  //   // this.navCtrl.push(TabsclinicPage); 
-  //   /**------ */
-  //   if (this.validate()) {
-  //     this.shared.showLoading(this.translateService.instant('loading'))
-  //     let body = new FormData();
-  //     body.append('cel_phone', this.registerForm.value.phone);
-  //     body.append('password', this.registerForm.value.password);
-  //     let seq = this.api.post("patients/login/", body)
-  //     console.log(seq)
-  //     seq.map(res => res.json()).subscribe(res => {
-  //       this.shared.hideLoading()
-  //       console.log(res)
-  //       if (res.patient) {
-  //         this.shared.loggedIn(res.patient, 'login')
-  //         if (this.navParams.get('item')) {
-  //           var data = {
-  //             time: this.navParams.get('time'), date: this.navParams.get('date'), districtname: this.navParams.get('districtname'),
-  //             item: this.navParams.get('item'), reason: this.navParams.get('reason'), districtsdoctor: this.navParams.get('districtsdoctor'), schedule: this.navParams.get('schedule')
-  //           }
-  //           this.navCtrl.push(AppointmentStep3Page, data);
-  //         } else this.navCtrl.push(TabspatientPage);
-  //       } else if (res.doctor) {
-  //         this.shared.loggedIn(res.doctor, 'login')
-  //         this.navCtrl.push(TabsdoctorPage);
-  //       }
-  //       else {
-  //         var seq1 = this.api.post("../rest-auth/login/", body)
-  //         //            console.log(seq1)
-  //         //            this.navCtrl.push(TabsclinicPage);
-  //         //            return;
-  //         console.log(body);
-  //         seq1.map(res => res.json()).subscribe(res => {
-  //           console.log(res)
-  //           if (res.doctor) {
-  //             // if(res1.clinic) {
-  //             // this.shared.loggedIn(res1.clinic,'login')
-  //             this.navCtrl.push(TabsclinicPage);
-  //           }
-  //           else {
-  //             this.shared.ShowToast(this.translateService.instant('errorlogin'));
-  //           }
-  //         });
-  //       }
-  //       // else if(res.clinic){
-  //       //   this.shared.loggedIn(res.clinic,'login')
-  //       //   this.navCtrl.push(TabsclinicPage); 
-  //       // }
-  //       // else this.shared.ShowToast(this.translateService.instant('errorlogin'));
-  //       //  } else this.shared.ShowToast(this.translateService.instant('errorlogin'));
-  //     }, err => {
-  //       console.error('ERROR', err)
-  //       this.shared.hideLoading()
-  //       this.shared.ShowToast(err);
-  //     });
-  //   }
-  // }
-
   login() {
     if (this.validate()) {
       this.shared.showLoading(this.translateService.instant('loading'));

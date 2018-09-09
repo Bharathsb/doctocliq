@@ -21,7 +21,7 @@
 		  [showCancelButton]="shouldShowCancel"
 		  (ionInput)="searchFn($event)"
 		  (ionCancel)="onCancel($event)"
-		  placeholder="{{ 'Choose' | translate }} {{ 'patient' | translate }}">
+		  placeholder="{{ 'Choose patient' | translate }}">
   </ion-searchbar>
 	<ion-list>
 			<ion-item *ngFor="let patient of patientList | search: term"(click)="choose(patient)">{{patient.name}}	</ion-item>

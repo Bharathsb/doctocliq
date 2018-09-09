@@ -22,6 +22,7 @@
         "@angular/platform-browser": "5.0.3",
         "@angular/platform-browser-dynamic": "5.0.3",
         "@ionic-native/android-permissions": "^4.11.0",
+        "@ionic-native/app-availability": "^4.12.2",
         "@ionic-native/call-number": "^4.11.0",
         "@ionic-native/core": "^4.3.2",
         "@ionic-native/geolocation": "^4.3.1",
@@ -37,6 +38,7 @@
         "cordova-android": "6.2.3",
         "cordova-browser": "5.0.3",
         "cordova-plugin-android-permissions": "^1.0.0",
+        "cordova-plugin-appavailability": "^0.4.2",
         "cordova-plugin-compat": "^1.2.0",
         "cordova-plugin-device": "^1.1.7",
         "cordova-plugin-geolocation": "^2.4.3",
@@ -73,7 +75,8 @@
                 "GEOLOCATION_USAGE_DESCRIPTION": "To locate you"
             },
             "mx.ferreyra.callnumber": {},
-            "cordova-plugin-android-permissions": {}
+            "cordova-plugin-android-permissions": {},
+            "cordova-plugin-appavailability": {}
         },
         "platforms": [
             "android",

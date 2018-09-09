@@ -29,8 +29,6 @@ export class LandingPage {
     public translateService: TranslateService, public modalCtrl: ModalController) {
       if(this.shared.specialitylist.length==0)this.shared.loadspecialities()
       if(this.shared.districtlist.length==0)this.shared.loaddistricts()
-      console.log(moment( ).add(3,'days').format("YYYY-MM-DD"))
-        
     }
 
   gotoLogin(){
