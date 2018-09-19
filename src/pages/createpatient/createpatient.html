@@ -4,7 +4,7 @@
   See http://ionicframework.com/docs/components/#navigation for more info on
   Ionic pages and navigation.
 -->
-<ion-header class="patient-header" >
+<ion-header class="patient-header">
   <ion-navbar>
     <ion-title text-center>{{ 'Create Patient' | translate }}</ion-title>
     <ion-buttons end>
@@ -82,9 +82,14 @@
     </ion-item>
   </ion-row>
 
-  <ion-row margin-top class="patient-btn">
+  <!-- <ion-row margin-top class="patient-btn">
     <button ion-button color="secondary" block margin-top (click)="createPatient()">
       {{ 'Create patient' | translate }}
     </button>
-  </ion-row>
+  </ion-row> -->
+  <div text-center padding>
+    <button ion-button color="secondary" (click)="createPatient()">
+      {{ 'Create patient' | translate }}
+    </button>
+  </div>
 </ion-content>

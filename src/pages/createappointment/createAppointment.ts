@@ -48,15 +48,16 @@ export class CreateAppointmentComponent implements OnInit {
     this.shared.setCurrentPage("createAppointment");
     this.appointmentModel = new AppointmentModel();
     this.establishments = new Map<number, number>();
-    this.shared.showLoading(this.translateService.instant('loading'));
-    this.api.authget(this.api.getClinicInfo).map(res => res.json()).subscribe(res => {
-      this.shared.hideLoading();
-      let establishmentDetails = Object.keys(res.establishments);
+    // this.shared.showLoading(this.translateService.instant('loading'));
+    //this.api.authget(this.api.getClinicInfo).map(res => res.json()).subscribe(res => {
+    // this.shared.hideLoading();
+    let clinicInfo =this.shared.clinicInfo;
+      let establishmentDetails = Object.keys(clinicInfo.establishments);
       for (let key of establishmentDetails) {
-        this.establishments.set(Number(key), res.establishments[key]);
+        this.establishments.set(Number(key), clinicInfo.establishments[key]);
       }
-      this.list_reasons = res.reasons;
-      this.lista_especialidades = res.specialities;
+      this.list_reasons = clinicInfo.reasons;
+      this.lista_especialidades = clinicInfo.specialities;
 
       if (this.type === 'Update') {
         this.loadEstidos();
@@ -80,6 +81,9 @@ export class CreateAppointmentComponent implements OnInit {
           appointment.comment_patient = "No Comment";
         }
         this.appointmentModel.comment_patient = appointment.comment_patient;
+        if (appointment.comment_doctor === "" || appointment.comment_doctor === undefined || appointment.comment_doctor === null) {
+          appointment.comment_doctor = "No Comment";
+        }
         this.appointmentModel.comment_doctor = appointment.comment_doctor;
         this.appointmentModel.estado = appointment.state;
         this.selectedDoctor(doctorObj.id);
@@ -124,10 +128,10 @@ export class CreateAppointmentComponent implements OnInit {
         this.title = "Create Appointment";
       }
 
-    }, err => {
+    /*}, err => {
       this.shared.ShowToast(this.translateService.instant('Failedloading'));
       console.error('ERROR', err);
-    });
+    }); */
   }
 
   closeModal() {
@@ -245,15 +249,17 @@ export class CreateAppointmentComponent implements OnInit {
   }
 
   private getPatientList() {
+    this.shared.showLoading(this.translateService.instant('loading'));
     this.api.get(this.api.apiPaitentList).map(res => res.json()).subscribe(res => {
       this.lista_patients = [];
       res.patients.forEach((data) => {
         let patientObj = {
           name: data.first_name + " " + data.last_name,
-          id: data.user_id
+          id: data.id
         }
         this.lista_patients.push(patientObj);
       });
+      this.shared.hideLoading();
     }, err => {
       this.shared.ShowToast(this.translateService.instant('Failedloading'))
       console.error('ERROR', err)
@@ -309,21 +315,6 @@ export class CreateAppointmentComponent implements OnInit {
     this.lista_estados.push(estados);
     estados = { id: "6", value: "Otro" };
     this.lista_estados.push(estados);
-  }
-
-  private loadMotivo() {
-    this.establishments = new Map<number, number>();
-    this.api.authget(this.api.getClinicInfo).map(res => res.json()).subscribe(res => {
-      let establishmentDetails = Object.keys(res.establishments);
-      for (let key of establishmentDetails) {
-        this.establishments.set(Number(key), res.establishments[key]);
-      }
-      this.list_reasons = res.reasons;
-      this.lista_especialidades = res.specialities;
-    }, err => {
-      this.shared.ShowToast(this.translateService.instant('Failedloading'));
-      console.error('ERROR', err);
-    });
   }
 
   gotoSearch1() {
@@ -401,7 +392,7 @@ export class CreateAppointmentComponent implements OnInit {
   }
 
   successAlertRedirect(subTitle: string, redirectKey: string) {
-    let alert = this.alertCtrl.create({
+    /* let alert = this.alertCtrl.create({
       title: 'Success', subTitle: subTitle,
       buttons: [
         {
@@ -412,7 +403,11 @@ export class CreateAppointmentComponent implements OnInit {
         }
       ]
     });
-    alert.present();
+    alert.present(); */
+    this.shared.ShowToast(subTitle);
+    setTimeout(() =>{
+      this.redirectToBack(redirectKey);
+    },1000);
   }
 
   ionViewWillLeave() {

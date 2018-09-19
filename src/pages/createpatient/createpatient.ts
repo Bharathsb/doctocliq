@@ -55,17 +55,19 @@ export class CreatePatientComponent implements OnInit {
             let requestValue = {
                 'first_name': this.patientForm.value['first_name'],
                 'last_name': this.patientForm.value['last_name'],
-                'email': this.patientForm.value['email'] || null,
-                'district': this.district || null,
+                'email': this.patientForm.value['email'] || "",
+                'district': this.district || "",
                 'cel_phone': this.patientForm.value['cel_phone'],
-                'birth_date': this.patientForm.value['birth_date'] || null,
+                'birth_date': this.patientForm.value['birth_date'] || "",
                 'sex': this.gender,
-                'dni': this.patientForm.value['dni'] || null,
+                'dni': this.patientForm.value['dni'] || ""
             }
             this.api.authpost(this.api.createPatient, requestValue, false).map(res => res.json()).subscribe(res => {
                 if (res) {
-                    this.shared.showAlert('Nuevo paciente registrado correctamente');
-                    this.closeModal();
+                    this.shared.ShowToast('Nuevo paciente registrado correctamente');
+                    setTimeout(() =>{
+                        this.closeModal();
+                      },1000)
                 }
             }, err => {
                 let error = err.json();

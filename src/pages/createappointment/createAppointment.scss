@@ -28,3 +28,16 @@ page-modalappointment {
     max-width: 100%;
     // float: right;
 }
+
+.textarea-readonly .item-inner{
+    border-bottom-color: #dedede !important;
+  -webkit-box-shadow: inset 0 -1px 0 0 #dedede !important;
+  box-shadow: inset 0 -1px 0 0 #dedede !important;
+
+}
+.textarea-font{
+    font-family: "Roboto", "Helvetica Neue", sans-serif;
+    font-size: 1.4rem;
+    pointer-events: none;
+}
+

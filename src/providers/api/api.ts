@@ -14,8 +14,6 @@ export class Api {
   // url: string = '35.229.16.214/api-v1/';
   // ImageUrl: string = '35.229.16.214/';
 
-  url: string = 'http://www.doctocliq.com/api-v1/';
-  // url: string = '/api-v1/';
   ImageUrl: string = 'http://www.doctocliq.com/';
 
   apipatients: string = 'patients/'
@@ -31,10 +29,7 @@ export class Api {
   apireason: string = "reasons/list_by_establishment/"
   apicreatappointments: string = "/appointments/"
   apischedule: string = "schedules/get_work_schedule_short_view/?establishment_id="
-  sessionClearUrl: string = "http://www.doctocliq.com/salir/";
-  loginUrl: string ='http://www.doctocliq.com/rest-auth/login/';
-  // loginUrl: string = '/login/';
-  // sessionClearUrl: string = "/salir/";
+
   createPatient: string = "clinics/create_patient/";
   createAppointment: string = "clinics/create_appointment/";
   apiDoctorList: string = "clinics/get_doctors/";
@@ -44,6 +39,15 @@ export class Api {
   deleteAppointment: string = "clinics/remove_appointment/";
   updateAppoinmetnt: string = "clinics/update_appointment/";
   getClinicInfo: string = "clinics/get_clinic_info";
+
+  // To deploy uncomment below lines and
+  url: string = 'http://www.doctocliq.com/api-v1/';
+  sessionClearUrl: string = "http://www.doctocliq.com/salir/";
+  loginUrl: string ='http://www.doctocliq.com/rest-auth/login/';
+  // To run local uncomment below lines
+  // url: string = '/api-v1/';
+  // loginUrl: string = '/login/';
+  // sessionClearUrl: string = "/salir/";
 
   constructor(public http: Http) {
 

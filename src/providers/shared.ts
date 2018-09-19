@@ -16,7 +16,8 @@ export class Shared {
     public loader
     public celphone//='112233445'
     public specialitylist = []
-    public districtlist = []
+    public districtlist = [];
+    public clinicInfo: any;
     constructor(public loadingCtrl: LoadingController, public alertCtrl: AlertController
         , public toastCtrl: ToastController, public storage: Storage, public api: Api, public translateService: TranslateService) {
 
@@ -130,4 +131,12 @@ export class Shared {
         return localStorage.getItem('currentPage');
     }
 
+    loadClinicInfo() {
+        this.api.get(this.api.getClinicInfo).map(res => { return res.json(); }).subscribe(res => {
+            this.clinicInfo = res;
+        }, err => {
+            this.ShowToast(this.translateService.instant('Failedloading'))
+            console.error('ERROR', err);
+        });
+    }
 }

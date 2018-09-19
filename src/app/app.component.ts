@@ -44,6 +44,7 @@ export class MyApp {
     platform.ready().then(() => {
       statusBar.styleDefault();
       statusBar.overlaysWebView(false);
+      statusBar.backgroundColorByHexString('#004D99');
       splashScreen.hide();
       androidPermissions.requestPermissions(
         [

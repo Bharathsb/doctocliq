@@ -89,11 +89,16 @@
     </ion-row>
 
   </form>
-  <ion-row class="appointment-btn">
+  <!-- <ion-row class="appointment-btn">
     <button ion-button color="secondary" block margin-top (click)="creatApointment();">
       {{ 'Create appointment' | translate }}
     </button>
-  </ion-row>
+  </ion-row> -->
+  <div text-center padding>
+    <button ion-button color="secondary" (click)="creatApointment();">
+      {{ 'Create appointment' | translate }}
+    </button>
+  </div>
 </ion-content>
 
 <ion-content padding *ngIf="this.type === 'Update'">
@@ -157,9 +162,9 @@
     </ion-col>
   </ion-row>
   <ion-row>
-    <ion-item>
+    <ion-item class="textarea-readonly">
       <ion-label floating>{{'Comment of the patient' | translate}}</ion-label>
-      <ion-textarea [(ngModel)]="appointmentModel.comment_patient" rows="3" readonly></ion-textarea>
+      <ion-textarea class="textarea-font" [(ngModel)]="appointmentModel.comment_patient" rows="3" readonly></ion-textarea>
     </ion-item>
   </ion-row>
   <ion-row>
@@ -169,9 +174,9 @@
     </ion-item>
   </ion-row>
   <ion-row>
-    <ion-item>
+    <ion-item  class="textarea-readonly">
       <ion-label floating>{{'Doctors comment' | translate}}</ion-label>
-      <ion-textarea [(ngModel)]="appointmentModel.comment_doctor" rows="3"></ion-textarea>
+      <ion-textarea class="textarea-font" [(ngModel)]="appointmentModel.comment_doctor" rows="3" readonly></ion-textarea>
     </ion-item>
   </ion-row>
   <ion-row>
@@ -183,12 +188,20 @@
     </ion-item>
   </ion-row>
 
-  <ion-row class="appointment-btn">
+  <!-- <ion-row class="appointment-btn">
     <button ion-button color="secondary" block margin-top (click)="updateApointment();">
       {{ 'Update' | translate }}
     </button>
     <button ion-button color="secondary" block margin-top (click)="remove();">
       {{ 'Remove' | translate }}
     </button>
-  </ion-row>
+  </ion-row> -->
+  <div text-center padding>
+    <button ion-button color="secondary" (click)="updateApointment();">
+      {{ 'Update' | translate }}
+    </button>
+    <button ion-button color="secondary" (click)="remove();">
+      {{ 'Remove' | translate }}
+    </button>
+  </div>
 </ion-content>
